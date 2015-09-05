@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta https-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 ,user-scalable = no" />
+     <link rel="stylesheet" href="js/jquery.mobile-1.2.0.css" />
+    <link href="css/mycss.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jqueryalerts.js"></script>
+    <link rel="stylesheet" href="js/jqueryalerts.css"/>
+     <script src="js/jquery.mobile-1.2.0.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/freeAPI.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=2.exp&sensor=false" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?v=2.exp&sensor=false&key=AIzaSyC4EK1E2NNgs0V9IkOyQWGT33rOOk7KThY&language=en" type="text/javascript"></script>
+    <title>Accident Reports</title>
+     <style type="text/css">
+        .view
+        {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+            border: 2px red medium;
+            opacity: 0.7;
+            filter: alpha(opacity=50);
+            filter: "alpha(opacity=50)";
+            cursor: default;
+        }
+        .loadingimg
+        {
+            color: #FFF;
+            left: 40%;
+            margin-top: 50%;
+            position: relative;
+            z-index: 1000;
+            height: 20%;
+            width: 50px;
+        }
+        .searchbox {
+    background-image: url('/images/search-text-area.png');
+	background-repeat: no-repeat;
+	background-position:center;
+    background-size:100% 100%;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.textbox {
+    width:100%;
+    height:90%;
+    font-family: Arial!important;
+     font-size:12px;color:#5e5e5e;
+    background:transparent;
+    margin:none!important;
+ }
+input[type="text"]{
+    border: 0px solid #CDFF3C;
+    color:white;
+    background:transparent !important;
+    width:100%;height:100%;
+    -webkit-border-radius: 4px;
+    padding-left: 10px;
+    text-shadow: none!important;
+      
+      }
+.displayAddressKM
+{
+border-bottom:1px solid #5e5e5e!important;
+height:50px;
+width:100%;
+margin-bottom:10px;
+margin-top: 10px;
+font-family: Arial!important;
+font-size: 14px!important;
+text-shadow: none!important;
+color: white!important;
+overflow: hidden;
+      o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+       white-space: nowrap;
+}
+ .displaykm
+ {
+float: left;
+border-right: 1px solid #5e5e5e!important;
+color: #929292!important;
+font-family: Arial!important;
+font-size: 12px!important;
+text-shadow: none!important;
+width:20%!important;
+text-align:center;
+
+ }
+ .displaykmlast
+ {
+ float: left;
+color: #929292!important;
+font-family: Arial!important;
+font-size: 12px!important;
+text-shadow: none!important;
+width:20%!important;
+text-align:center;
+ }
+ .displayAddress
+ {
+ width:50%;
+    padding-left: 10px;
+color: #929292!important;
+font-family: Arial!important;
+font-size: 14px!important;
+font-weight:bold;
+text-shadow: none!important;
+padding-bottom:5px;
+overflow: hidden;
+      o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+ }
+ .searchdiv
+ {
+     width:100%;background-color:#5e5e5e!important;
+ }
+ .borderright
+{
+border-right: 1px solid #5e5e5e!important;
+}
+.mapdisplay
+{
+width: 100%;margin-top:-16px;max-width:none;height:300px;
+
+}
+.mappopuploc
+{
+    color:black;width:250px;font-family:calibri;overflow-x: hidden;overflow-y: hidden;
+   
+}
+    </style>
+    <script type="text/javascript">
+    var currentlat;
+    var currentlong;
+var query = window.location.search.substring(1);
+            var parms = query.split('&');
+
+            var pos = parms[0].indexOf('=');
+            if (pos > 0) {
+                currentlat = parms[0].substring(pos + 1);               
+                    pos = parms[1].indexOf('=');
+                    currentlong = parms[1].substring(pos + 1);
+                
+            }
+          //  currentlat = 0;
+         // currentlong = 0;            
+            
+         
+        var currentPage = 'POIPage';
+        var prevPage = '';
+        var pageData = ["POIPage"];
+      
+        var infowindow;
+        var map;
+
+        var pano;
+
+        var svClient;
+
+        var directions;
+
+        var route;
+
+        var vertices;
+
+        var vertexMap;
+
+        var stepToVertex;
+
+        var stepMap;
+
+        var currentLatLng;
+
+        var panoMetaData;
+
+        var close = false;
+
+        var bearing;
+
+        var nextBearing;
+
+        var nextVertexId;
+
+        var nextVertex;
+
+        var progressArray;
+
+        var progressDistance;
+
+        var currentStep;
+
+
+        var carMarker;
+
+
+        var selectedStep = null;
+
+
+        var driving = false;
+
+
+        var advanceTimer = null;
+
+
+        var advanceDelay = 1;
+
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+document.addEventListener("backbutton", backKeyDown, true);
+dBcall();
+            load();
+
+            
+           
+        }
+        $(document).ready(function () {
+       // document.getElementById('view-loadingpoi').style.display = "block";
+       // document.addEventListener("backbutton", backKeyDown, true);         
+          /*  $('#mapdisp').height(window.innerHeight);
+            $('#mapdispSA').height(window.innerHeight);
+            $('#mapdispBP').height(window.innerHeight); */
+            
+            $('#mapdisp').height(window.innerHeight);
+            $('#mapdispSA').height(window.innerHeight);
+            $('#mapdispBP').height(window.innerHeight);                  
+           
+            
+            
+        });
+        
+        function backKeyDown() {
+       // alert(currentPage);
+            if ($("#popup_container").is(":visible") == true) {
+
+            }
+            else if (currentPage == 'POIPage') {
+             
+                //app.exit();
+                navigator.app.exitApp();
+            }
+            else {
+               
+                pageData.pop();
+                currentPage = pageData[pageData.length - 1];
+                $.mobile.changePage('#' + currentPage, {
+                    transition: "none",
+                    reverse: true,
+                    changeHash: false
+                });
+            }
+        }  
+    
+     var searchdata = [];
+        var pinnedlocations = [];
+        var kmshrsAcc = [];
+        function gobackPage() {
+ 
+            pageData.pop();
+            currentPage = pageData[pageData.length - 1];
+            $.mobile.changePage('#'+currentPage, {
+                transition: "none",
+                reverse: true,
+                changeHash: false
+            });
+            // currentPage = pageData.pop();
+            pageData.push(currentPage);
+        }
+       
+        function gotoPOIPage() {
+            $.mobile.changePage('#POIPage', {
+                transition: "none",
+                reverse: false,
+                changeHash: false
+            });
+            currentPage = 'POIPage';
+            pageData.push(currentPage);
+        }
+        /* First Acco*/
+        function gotoQAAccomodation() {
+        searchdata = [];
+              pinnedlocations = [];
+              kmshrsACC = [];   
+              document.getElementById('isSearchLoc').value = "";     
+          document.getElementById('view-loadingpoi').style.display = "block";
+         var db = openDatabase('aarescuepoidb', '1.0', 'AAPOIdatabase', 4*1024*1024);
+         db.transaction(function (tx) {
+              var selectAccom = 'select Name,AA_rating,Latitude,Longitude,Seopermalink, PhoneNumber from AAAccommodation';
+             tx.executeSql(selectAccom,[],Accomatnresponse);
+         });
+            
+           // document.getElementById('view-loadingpoi').style.display = "none";
+        }
+        function gotoFuelStationSearchPage() {
+            $.mobile.changePage('#FuelStationSearchPage', {
+                transition: "none",
+                reverse: false,
+                changeHash: false
+            });
+            currentPage = 'FuelStationSearchPage';
+            pageData.push(currentPage);
+        }
+       
+         var locationsnearby = [];
+         var destarr = [];
+        function Accomatnresponse(tx, result) {
+            
+            var service = new google.maps.DistanceMatrixService();
+             var orgplace = new google.maps.LatLng(currentlat, currentlong);
+                if(currentlat == 0){
+                orgplace = new google.maps.LatLng(-26.138608, 27.905146);
+                currentlat = "-26.138608";
+                currentlong = "27.905146";
+                }
+                if (destarr.length == 0) {                
+                      var dest = new google.maps.LatLng(currentlat, currentlong);
+                      destarr.push(dest);
+                  }
+            if (result.rows.length > 0) {
+           // alert(result.rows.length);
+                for (var i = 0; i < result.rows.length; i++) {
+                    var rowdata = result.rows.item(i);
+                      var Name = rowdata["Name"];
+                      var rating = rowdata["AA_rating"];
+                      var Latitude = rowdata["Latitude"];
+                      var Longitude = rowdata["Longitude"];
+                      var link = rowdata["Seopermalink"];
+                      var Phnum = rowdata["PhoneNumber"];
+                    
+
+
+                    
+                    // alert(locations[i][0]);
+               
+                    if (Latitude != 0) {
+                          if (destarr.length <= 24) {
+                        // alert(currentlat + "long: "+currentlong + "destlo: " + Latitude + "dfest: " + Longitude);
+                              var destar = getdistance(currentlat, currentlong, Latitude, Longitude);
+                              if (destar <= 50) {
+                             // alert('test1');
+                                  var dest = new google.maps.LatLng(Latitude, Longitude);
+
+                                  destarr.push(dest);
+                                   var locnb = [Name, rating, Latitude, Longitude, link, Phnum];
+                        locationsnearby.push(locnb);
+                              }
+                          }
+                        
+
+                      }
+                }
+                // alert("arr len "+destarr.length);
+                //current place
+               
+               
+              setTimeout(function(){
+              //alert("arrset "+destarr.length);
+          service.getDistanceMatrix(
+         {
+             origins: [orgplace],
+             destinations: destarr,
+             travelMode: google.maps.TravelMode.DRIVING,
+             unitSystem: google.maps.UnitSystem.METRIC,
+             avoidHighways: false,
+             avoidTolls: false
+         }, callback);
+         
+            },5000);
+            $.mobile.changePage('#FuelStationPage', {
+                transition: "none",
+                reverse: false,
+                changeHash: false
+            });
+            currentPage = 'FuelStationPage';
+            pageData.push(currentPage);
+            }
+            
+        }
+   
+ /****Get Distance******/
+
+ function getdistance(lat1, lon1, lat2, lon2) {
+     var R = 6371; // Radius of the earth in km
+     var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
+     var dLon = (lon2 - lon1) * Math.PI / 180;
+     var a = 0.5 - Math.cos(dLat) / 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *(1 - Math.cos(dLon)) / 2;
+     //alert(R * 2 * Math.asin(Math.sqrt(a)));
+     return R * 2 * Math.asin(Math.sqrt(a));
+    
+
+ }
+       
+        function load() { directionsDisplay = new google.maps.DirectionsRenderer(); var e = new google.maps.LatLng(37.09024, -95.712891); map = new google.maps.Map(document.getElementById("mapdirection"), { center: e, zoom: 3, mapTypeId: google.maps.MapTypeId.ROADMAP, disableDefaultUI: true }); pano = new google.maps.StreetViewPanorama(document.getElementById("streetview")); google.maps.event.addListener(pano, "initialized", function (e) { panoMetaData = e; moveCar() }); google.maps.event.addListener(pano, "error", function (e) { showStatus("The requested panorama could not be displayed") }); directionsDisplay.setPanel(document.getElementById('directions')); }
+        //  var map;
+        var geocoder;
+        var bounds = new google.maps.LatLngBounds();
+        var markersArray = [];
+        //var origin1 = new google.maps.LatLng(55.930, -3.118);
+        var origin2 = 'Greenwich, England';
+        var destinationA = 'Stockholm, Sweden';
+        var destinationB = new google.maps.LatLng(50.087, 14.421);
+        var destinationIcon = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=D|FF0000|000000';
+        var originIcon = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000';
+
+
+        function initialize() {
+            var opts = {
+                center: new google.maps.LatLng(55.53, 9.4),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'), opts);
+            geocoder = new google.maps.Geocoder();
+        }
+        var service = new google.maps.DistanceMatrixService();
+        /********/
+        
+         function callback(response, status) {
+
+            var tblhtml = document.getElementById('listaddress');
+            if (status != google.maps.DistanceMatrixStatus.OK) {
+            document.getElementById('view-loadingpoi').style.display = "none";
+                //alert('Error was: ' + status);
+                // document.getElementById('tbllocation').innerHTML=null;
+                //  document.getElementById('tbllocation').innerHTML= '<tr><td style="color:white;font-family:calibri;padding:10px;">The Where to Buy feature uses location based services to determine the closest sales office within 50kms to your current location. Please activate your Location Services.</td></tr>';
+            } else {
+            setTimeout(function(){
+                // alert(JSON.stringify(response));
+               // setTimeout(function(){
+document.getElementById('view-loadingpoi').style.display = "block";
+//},100);
+                var origins = response.originAddresses;
+                var destinations = response.destinationAddresses;
+                var outputDiv = document.getElementById('outputDiv');
+                outputDiv.innerHTML = '';
+                deleteOverlays();
+                //alert(origins);
+                var data = '';
+                var localplace = new google.maps.LatLng(currentlat, currentlong);
+                if ((currentlat == 0))//Mysore =12.29581 ,76.639381>
+                {
+                    localplace = new google.maps.LatLng(-26.138608, 27.905146);
+                    currentlat = "-26.138608";
+                    currentlong = "27.905146";
+                }
+                // alert(localplace);
+                maploc = new google.maps.Map(document.getElementById("mapdisp"), {
+                    center: localplace,
+                    zoom: 14,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    disableDefaultUI: true
+                });               
+                
+                var image = 'images/greenpointer.png';
+                var pointcur = new google.maps.LatLng(currentlat, currentlong);
+                var marker = new google.maps.Marker({
+                    position: pointcur,
+                    icon: image,
+                    map: maploc
+                });
+                //alert(marker);
+                google.maps.event.addListener(marker, "click", function (event) {
+
+                    if (infowindow) infowindow.close();
+
+                    var evelatitu = currentlong.split('.')[1];
+
+                    if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                        var txthtml = "<div class='mappopuploc'>MyLocation<br/>" + response.originAddresses[0] + "</div>";
+                        infowindow = new google.maps.InfoWindow({
+                            content: txthtml
+                        });
+                        infowindow.open(maploc, this);
+                    }
+                    else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                        var txthtml = "<div class='mappopuploc'>MyLocation<br/>" + response.originAddresses[0] + "</div>";
+                        infowindow = new google.maps.InfoWindow({
+                            content: txthtml
+                        });
+                        infowindow.open(maploc, this);
+                    }
+                });                                                  //alert(point);
+                //markercur.setMap(maploc);
+                //-26.204103,28.047305>
+                var bounds = maploc.getBounds();
+                // tblloc.innerHTML=null;
+                // alert(destinations.length);
+                //var pinnedlocations = [];
+
+                for (var l = 0; l < origins.length; l++) {
+                    var results = response.rows[l].elements;
+                    // alert("results:::::" + results);
+                    for (var j = 0; j < results.length-1; j++) {
+                        // alert(results[j].distance);
+                        if (results[j].distance != null) {
+                            // alert(parseInt(results[j].distance.value));
+                            if (parseInt(results[j].distance.value) <= 50000) {
+                               
+                                var locdet = locationsnearby[j].toString().split(',');
+
+                                var image = 'images/pointerimg.png';
+                                /***Search page*****/
+                                var hrs = "";
+                                var mindata = "";
+                                //  alert(locdet[0] + ":::" + locdet[1]);
+                                var dratn = results[j].duration.text;
+                                //alert(dratn);
+                                if (dratn.split(' ').length > 2) {
+                                    // alert(dratn.split(' ')[1]);
+                                    hrs = dratn.split(' ')[0] + ' ' + dratn.split(' ')[1];
+                                    mindata = dratn.split(' ')[2] + ' ' + dratn.split(' ')[3];
+
+
+                                }
+                                else {
+                                    if (dratn.split(' ')[1] == 'mins') {
+
+                                        mindata = dratn.split(' ')[0] + ' ' + dratn.split(' ')[1];
+
+                                    }
+                                    else {
+
+                                        hrs = dratn.split(' ')[0] + ' ' + dratn.split(' ')[1];
+                                    }
+                                }
+                                var hrsdata = [results[j].distance.text, mindata, hrs];
+                                kmshrsAcc.push(hrsdata);
+                                pinnedlocations.push(locationsnearby[j]);
+                                // document.getElementById('displaytimehrs').innerHTML = dratn.split('hours')[0] + "hours";
+                                // document.getElementById('displaytimemin').innerHTML = dratn.split('hours')[1];
+                               
+                                /***Search page end*****/
+                                var point = new google.maps.LatLng(locdet[2], locdet[3]);
+                                var marker = new google.maps.Marker({
+                                    position: point,
+                                    icon: image,
+                                    map: maploc
+                                })
+
+                                google.maps.event.addListener(marker, "click", function (event) {
+                                    //alert('test');
+                                    //alert(JSON.stringify(event));
+                                    if (infowindow) infowindow.close();
+                                    //pinnedlocations.length
+                                    for (var j = 0; j < 1; j++) {
+                                        //alert('tes');
+                                        var evelatitu = pinnedlocations[j][2].split('.')[1];
+                                       // alert(pinnedlocations[j][0]);
+                                        //alert(pinnedlocations[j][0]+':::::'+pinnedlocations[j][1], pinnedlocations[j][2], pinnedlocations[j][3], pinnedlocations[j][4], pinnedlocations[j][5], pinnedlocations[j][6]);
+                                        if (pinnedlocations[j][0] != null || pinnedlocations[j][0] != undefined) {
+                                            pinnedlocations[j][0] = pinnedlocations[j][0];
+                                        }
+                                        else {
+                                            pinnedlocations[j][0] = " -";
+                                        }
+                                        if (pinnedlocations[j][1] != null || pinnedlocations[j][1] != undefined) {
+                                            pinnedlocations[j][1] = pinnedlocations[j][1];
+                                        }
+                                        else {
+                                            pinnedlocations[j][1] = " -";
+                                        }
+
+                                        if (pinnedlocations[j][5] != null || pinnedlocations[j][5] != undefined) {
+                                            pinnedlocations[j][5] = pinnedlocations[j][5];
+                                        }
+                                        else {
+                                            pinnedlocations[j][5] = " -";
+                                        }
+                                        if (pinnedlocations[j][4] != null || pinnedlocations[j][4] != undefined) {
+                                            pinnedlocations[j][4] = pinnedlocations[j][4];
+                                        }
+                                        else {
+                                            pinnedlocations[j][4] = " -";
+                                        }
+                                        // alert(event.latLng.k);
+                                        if ((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocations[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                                             var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber:" + pinnedlocations[j][5] + "<br/>" + "Weburl: <a href='" + pinnedlocations[j][4] + "' target='_blank'>" + pinnedlocations[j][4] + "</a></div>";
+                                            infowindow = new google.maps.InfoWindow({
+                                                content: txthtml
+                                            });
+                                            infowindow.open(maploc, this);
+                                        }
+                                        else if (((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocations[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                                            //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
+                                             var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber:" + pinnedlocations[j][5] + "<br/>" + "Weburl: <a href='" + pinnedlocations[j][4] + "' target='_blank'>" + pinnedlocations[j][4] + "</a></div>";
+                                            infowindow = new google.maps.InfoWindow({
+                                                content: txthtml
+                                            });
+                                            infowindow.open(maploc, this);
+                                        }
+                                    }
+                                });
+                                marker.setMap(maploc);
+
+                            }
+
+                        }
+                    }
+                   
+                    for (var s = 0; s < pinnedlocations.length; s++) {
+                        data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddress">' + pinnedlocations[s][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykm">' + kmshrsAcc[s][0] + '</div><div class="displaykm" id="displaytimemin">' + kmshrsAcc[s][1] + '</div><div class="displaykmlast" id="displaytimehrs">' + kmshrsAcc[s][2] + '</div></div>';
+                        //alert(results[j].distance.text);
+                        var searcharry = [pinnedlocations[s][0], kmshrsAcc[s][0], kmshrsAcc[s][1], kmshrsAcc[s][2]];
+                        searchdata.push(searcharry);
+                    }
+                    
+                    tblhtml.innerHTML = data;
+                    document.getElementById('view-loadingpoi').style.display = "none";
+                    // gotoQAAccomodation();
+                }
+},500);
+            }
+            
+
+        }
+        function addMarker(location, isDestination) {
+            var icon;
+            if (isDestination) {
+                icon = destinationIcon;
+            } else {
+                icon = originIcon;
+            }
+            geocoder.geocode({ 'address': location }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    bounds.extend(results[0].geometry.location);
+                    map.fitBounds(bounds);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        icon: icon
+                    });
+                    markersArray.push(marker);
+                } else {
+                    alert('Geocode was not successful for the following reason: '
+                      + status);
+                }
+            });
+        }
+        function deleteOverlays() {
+            for (var i = 0; i < markersArray.length; i++) {
+                markersArray[i].setMap(null);
+            }
+            markersArray = [];
+        }
+        var flagAccomodation = 0;
+        function searchaccommodation() {
+            var tblhtml = document.getElementById('listaddress');
+            tblhtml.innerHTML = "";
+            var data = "";
+            var flag = [];
+            var searchtxt = document.getElementById('isSearchLoc').value;
+            //alert("searchtxt::::" + searchtxt);
+            if (searchtxt != "") {
+                for (var i = 0; i < searchdata.length; i++) {
+                   // alert("searchdata[i][0]::::" + searchdata[i][0].toUpperCase());
+                    var comparetext = searchdata[i][0].toUpperCase();
+                    if (comparetext.indexOf(searchtxt.toUpperCase()) >= 0) {
+                        //flagAccomodation = 0;
+                        
+                        data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddress">' + searchdata[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykm">' + searchdata[i][1] + '</div><div class="displaykm" id="displaytimemin">' + searchdata[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdata[i][3] + '</div></div>';
+                        
+                    }
+                    else if (comparetext.indexOf(searchtxt.toUpperCase()) == -1 ) {
+                        flagAccomodation = 1;
+                        flag.push(flagAccomodation);
+                    }
+                }
+            }
+            else {
+                  jAlert("Please enter a keyword for search","");
+                for (var i = 0; i < searchdata.length; i++) {
+                    // alert("searchdata[i][0]::::" + searchdata[i][0].toUpperCase());
+                   
+                    
+                        data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddress">' + searchdata[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykm">' + searchdata[i][1] + '</div><div class="displaykm" id="displaytimemin">' + searchdata[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdata[i][3] + '</div></div>';
+                    
+                   
+                }
+            }
+           //alert(flag.length);
+                if (flag.length == searchdata.length) {
+                data = data + '<div class="displayAddressKM"  >There is no searched items</div>';
+
+            }
+            else {
+               
+            }
+            tblhtml.innerHTML = data;
+            
+        }
+        /**maps end****/
+     
+      var searchdataSA = [];
+  var pinnedlocationsSA = [];
+   
+          var destarrSA = [];
+          var kmshrsSA = []; 
+          function gotoASAgents() {
+          pinnedlocationsSA = [];
+          searchdataSA = [];            
+            
+              kmshrsSA = [];
+              document.getElementById('isSearchLocSA').value ="";
+              document.getElementById('view-loadingpoi').style.display = "block";
+            
+              var db = openDatabase('aarescuepoidb', '1.0', 'AAPOIdatabase', 4 * 1024 * 1024);
+              db.transaction(function (tx) {
+                  var selectSalesAgents = 'select Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal from SalesAgent';
+                
+                  tx.executeSql(selectSalesAgents, [], SalesAgentsresponse);
+              });
+              
+              //document.getElementById('view-loadingpoi').style.display = "none";
+          }
+          function gotoFuelStationSalesAgentSearchPage() {
+              $.mobile.changePage('#FuelStationSalesAgentsSearchPage', {
+                  transition: "none",
+                  reverse: false,
+                  changeHash: false
+              });
+              currentPage = 'FuelStationSalesAgentsSearchPage';
+              pageData.push(currentPage);
+          }
+
+         var locationsnearbySA = [];
+          function SalesAgentsresponse(tx, result) {
+             // alert(result.rows.length);
+              //locationsnearbySA = [];
+               var orgplace = new google.maps.LatLng(currentlat, currentlong);
+                if(currentlat == 0){
+                orgplace = new google.maps.LatLng(-26.138608, 27.905146);
+                currentlat = "-26.138608";
+                currentlong = "27.905146";
+                }
+                destarrSA = [];
+                if (destarrSA.length == 0) {
+                      var dest = new google.maps.LatLng(currentlat, currentlong);
+                      destarrSA.push(dest);
+                  }
+              if (result.rows.length > 0) {
+                  for (var i = 0; i < result.rows.length; i++) {
+                      var rowdata = result.rows.item(i);
+                      var Name = rowdata["Name"];
+                      var Catery = rowdata["Catery"];
+                      var Latitude = rowdata["Lat"];
+                      var Longitude = rowdata["Long"];
+                      var Telnumber = rowdata["Tel"];
+                      var Email = rowdata["Email"];
+                      var Website = rowdata["Website"];
+                      var AddressStreet = rowdata["AddressStreet"];
+                      var AddressSuburb = rowdata["AddressSuburb"];
+                      var AddressCity = rowdata["AddressCity"];
+                      var AddressPostal = rowdata["AddressPostal"];
+                      var service = new google.maps.DistanceMatrixService();
+                      // alert(locations[i][0]);
+                     /* if (Latitude != 0) {
+
+                          var dest = new google.maps.LatLng(Latitude, Longitude); //[locname1, Latitude, Longitude,LocationID];
+                          if (destarrSA.length <= 24) {
+                              destarrSA.push(dest);
+                          }
+                          var locnb = [Name, Catery, Latitude, Longitude, Telnumber, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal];
+                          locationsnearbySA.push(locnb);
+
+                      }*/
+                      if (Latitude != 0) {
+                          if (destarrSA.length <= 24) {
+                              var destar = getdistance(currentlat, currentlong, Latitude, Longitude);
+                              if (destar <= 50) {
+                                  var dest = new google.maps.LatLng(Latitude, Longitude);
+
+                                  destarrSA.push(dest);
+                                   var locnb = [Name, Catery, Latitude, Longitude, Telnumber, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal];
+                          locationsnearbySA.push(locnb);
+                              }
+                          }
+                         
+
+                      }
+                  }
+                   
+                  //current place
+                   
+                  setTimeout(function(){
+                  service.getDistanceMatrix(
+         {
+             origins: [orgplace],
+             destinations: destarrSA,
+             travelMode: google.maps.TravelMode.DRIVING,
+             unitSystem: google.maps.UnitSystem.METRIC,
+             avoidHighways: false,
+             avoidTolls: false
+         }, callbackSalesAgents);
+         },5000);
+         $.mobile.changePage('#FuelStationSalesAgentPage', {
+                  transition: "none",
+                  reverse: false,
+                  changeHash: false
+              });
+              currentPage = 'FuelStationSalesAgentPage';
+              pageData.push(currentPage);
+              }
+ }
+
+
+ 
+ function callbackSalesAgents(response, status) {
+
+     var displayLocSA = document.getElementById('listaddressSA');
+    // alert("listaddressSA:::::" + tblhtml);
+     if (status != google.maps.DistanceMatrixStatus.OK) {
+         //alert('Error was: ' + status);
+         // document.getElementById('tbllocation').innerHTML=null;
+         //  document.getElementById('tbllocation').innerHTML= '<tr><td style="color:white;font-family:calibri;padding:10px;">The Where to Buy feature uses location based services to determine the closest sales office within 50kms to your current location. Please activate your Location Services.</td></tr>';
+     } else {
+     setTimeout(function(){
+        // alert(JSON.stringify(response));
+document.getElementById('view-loadingpoi').style.display = "block";
+         var origins = response.originAddresses;
+         var destinations = response.destinationAddresses;
+         var outputDiv = document.getElementById('outputDivSA');
+         outputDiv.innerHTML = '';
+         deleteOverlays();
+         //alert(origins);
+         var data = '';
+         var localplace = new google.maps.LatLng(currentlat, currentlong);
+         if ((currentlat == 0))//Mysore =12.29581 ,76.639381>
+         {
+             localplace = new google.maps.LatLng(-26.138608, 27.905146);
+                      currentlat = "-26.138608";
+                      currentlong = "27.905146";
+         }
+         //alert(localplace);
+         maploc = new google.maps.Map(document.getElementById("mapdispSA"), {
+             center: localplace,
+             zoom: 14,
+             mapTypeId: google.maps.MapTypeId.ROADMAP,
+             disableDefaultUI: true
+         });
+         var image = 'images/greenpointer.png';
+                  var point = new google.maps.LatLng(currentlat, currentlong);
+                  var marker = new google.maps.Marker({
+                      position: point,
+                      icon: image,
+                      map: maploc
+
+                  })
+                  //alert(point);
+                  google.maps.event.addListener(marker, "click", function (event) {
+
+                      if (infowindow) infowindow.close();
+
+
+                      var evelatitu = currentlong.split('.')[1];
+
+                      //alert(event.latLng.k);
+                      //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
+                      if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                          var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
+
+                          infowindow = new google.maps.InfoWindow({
+                              content: txthtml
+                          });
+                          infowindow.open(maploc, this);
+                      }
+                      else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                          var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
+                          infowindow = new google.maps.InfoWindow({
+                              content: txthtml
+                          });
+                          infowindow.open(maploc, this);
+                      }
+
+                  });
+         //-26.204103,28.047305>
+         var bounds = maploc.getBounds();
+         // tblloc.innerHTML=null;
+         // alert(destinations.length);
+        pinnedlocationsSA = [];
+         for (var l = 0; l < origins.length; l++) {
+             var results = response.rows[l].elements;
+            // alert("results:::::" + results);
+             for (var j = 0; j < results.length-1; j++) {
+                 // alert(results[j].distance);
+                 if (results[j].distance != null) {
+                     // alert(parseInt(results[j].distance.value));
+                     if (parseInt(results[j].distance.value) <= 50000) {
+                        //alert(locationsnearbySA[j]);
+                         var locdet = locationsnearbySA[j].toString().split(',');
+                        // alert(
+                         var image = 'images/pointerimg.png';
+                         /***Search page**** 15 hours 20 mins*/
+                         var hrsSA = "";
+                         var mindataSA = "";
+                         
+                         var dratnSA = results[j].duration.text;
+                         //alert("dratnSA"+dratnSA);
+                         if (dratnSA.split(' ').length > 2) {
+                            
+                             hrsSA = dratnSA.split(' ')[0] + ' ' + dratnSA.split(' ')[1];
+                             mindataSA = dratnSA.split(' ')[2] + ' ' + dratnSA.split(' ')[3];
+
+
+                         }
+                         else {
+                             if (dratnSA.split(' ')[1] == 'mins') {
+
+                                 mindataSA = dratnSA.split(' ')[0] + ' ' + dratnSA.split(' ')[1];
+
+                             }
+                             else {
+
+                                 hrsSA = dratnSA.split(' ')[0] + ' ' + dratnSA.split(' ')[1];
+                             }
+                         }
+                           var hrsdata = [results[j].distance.text, mindataSA, hrsSA];
+                                  kmshrsSA.push(hrsdata);
+                                  
+                                  pinnedlocationsSA.push(locationsnearbySA[j]);
+                        // alert("text");
+                         
+                         /***Search page end*****/
+                         var point = new google.maps.LatLng(locdet[2], locdet[3]);
+                         var marker = new google.maps.Marker({
+                             position: point,
+                             icon: image,
+                             map: maploc
+                         })
+
+                         google.maps.event.addListener(marker, "click", function (event) {
+                             //alert('test');
+                             //alert(JSON.stringify(event));
+                             if (infowindow) infowindow.close();
+                             //pinnedlocationsSA.length
+                             for (var j = 0; j < 1; j++) {
+                                 //alert('tes');
+                                 var evelatitu = pinnedlocationsSA[j][3].split('.')[1];
+                                  if (pinnedlocationsSA[j][0] != null || pinnedlocationsSA[j][0] != undefined) {
+                                              pinnedlocationsSA[j][0] = pinnedlocationsSA[j][0];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][0] = "-";
+                                          }
+
+                                          if (pinnedlocationsSA[j][7] != null || pinnedlocationsSA[j][7] != undefined) {
+                                              pinnedlocationsSA[j][7] = pinnedlocationsSA[j][7];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][7] = "-";
+                                          }
+                                          if (pinnedlocationsSA[j][8] != null || pinnedlocationsSA[j][8] != undefined) {
+                                              pinnedlocationsSA[j][8] = pinnedlocationsSA[j][8];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][8] = "-";
+                                          }
+                                          if (pinnedlocationsSA[j][9] != null || pinnedlocationsSA[j][9] != undefined) {
+                                              pinnedlocationsSA[j][9] = pinnedlocationsSA[j][9];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][9] = "-";
+                                          }
+                                          if (pinnedlocationsSA[j][10] != null || pinnedlocationsSA[j][10] != undefined) {
+                                              pinnedlocationsSA[j][10] = pinnedlocationsSA[j][10];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][10] = "-";
+                                          }
+                                          if (pinnedlocationsSA[j][4] != null || pinnedlocationsSA[j][4] != undefined) {
+                                              pinnedlocationsSA[j][4] = pinnedlocationsSA[j][4];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][4] = "-";
+                                          }
+                                          if (pinnedlocationsSA[j][5] != null || pinnedlocationsSA[j][5] != undefined) {
+                                              pinnedlocationsSA[j][5] = pinnedlocationsSA[j][5];
+                                          }
+                                          else {
+                                              pinnedlocationsSA[j][5] = "-";
+                                          }
+                                
+                                 if ((pinnedlocationsSA[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocationsSA[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                                      var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "Physical Address: <br/>" + pinnedlocationsSA[j][7] + "," + pinnedlocationsSA[j][8] + "," + pinnedlocationsSA[j][9] + "," +pinnedlocationsSA[j][10]+ "<br/>PhoneNumber: " + pinnedlocationsSA[j][4] + "<br/>"+"Email: "+pinnedlocationsSA[j][5]+"</div>";
+                                     infowindow = new google.maps.InfoWindow({
+                                         content: txthtml
+                                     });
+                                     
+                                     infowindow.open(maploc, this);
+                                 }
+                                 else if (((pinnedlocationsSA[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocationsSA[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                                       var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "Physical Address: <br/>" + pinnedlocationsSA[j][7] + "," + pinnedlocationsSA[j][8] + "," + pinnedlocationsSA[j][9] + "," +pinnedlocationsSA[j][10]+ "<br/>PhoneNumber: " + pinnedlocationsSA[j][4] + "<br/>"+"Email: "+pinnedlocationsSA[j][5]+"</div>";
+                                     infowindow = new google.maps.InfoWindow({
+                                         content: txthtml
+                                     });
+                                     infowindow.open(maploc, this);
+                                 }
+                             }
+                         });
+                         marker.setMap(maploc);
+
+                     }
+                 }
+             }
+             
+            // alert(pinnedlocationsSA.length);
+             for (var s = 0; s < pinnedlocationsSA.length; s++) {
+                               data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressSA">' + pinnedlocationsSA[s][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmSA">' + kmshrsSA[s][0] + '</div><div class="displaykm" id="displaytimeminSA">' + kmshrsSA[s][1] + '</div><div class="displaykmlast" id="displaytimehrsSA">' + kmshrsSA[s][2] + '</div></div>';
+                         
+                          var searcharry = [pinnedlocationsSA[s][0], kmshrsSA[s][0], kmshrsSA[s][1], kmshrsSA[s][2]];
+                          searchdataSA.push(searcharry);
+                         }
+             displayLocSA.innerHTML = data;
+             document.getElementById('view-loadingpoi').style.display = "none";
+         }
+         },500);
+     }
+
+ }
+ var flagSalesAgent = 0;
+ function searchSalesAgents() {
+     var tblhtml = document.getElementById('listaddressSA');
+     tblhtml.innerHTML = "";
+     var data = "";
+     var flagSA = [];
+     var searchtxt = document.getElementById('isSearchLocSA').value;
+     //alert("searchtxt::::" + searchtxt);
+     if (searchtxt != "") {
+         for (var i = 0; i < searchdataSA.length; i++) {
+             var comparetext = searchdataSA[i][0].toUpperCase();
+             if (comparetext.indexOf(searchtxt.toUpperCase()) >= 0) {
+                 data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressSA">' + searchdataSA[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmSA">' + searchdataSA[i][1] + '</div><div class="displaykm" id="displaytimeminSA">' + searchdataSA[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdataSA[i][3] + '</div></div>';
+             }
+             else if (comparetext.indexOf(searchtxt.toUpperCase()) == -1) {
+                 flagSalesAgent = 1;
+                 flagSA.push(flagSalesAgent);
+             }
+         }
+     }
+     else {
+           jAlert("Please enter a keyword for search","");
+         for (var i = 0; i < searchdataSA.length; i++) {
+             // alert("searchdata[i][0]::::" + searchdata[i][0].toUpperCase());
+
+
+             data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressSA">' + searchdataSA[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmSA">' + searchdataSA[i][1] + '</div><div class="displaykm" id="displaytimeminSA">' + searchdataSA[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdataSA[i][3] + '</div></div>';
+
+
+         }
+     }
+                 if (flagSA.length == searchdataSA.length) {
+                data = data + '<div class="displayAddressKM">There is no searched items</div>';
+
+            }
+            else {
+               
+            }
+
+     tblhtml.innerHTML = data;
+ }
+      
+     
+          function gotoBPFillingStations() {
+           searchdataBP = [];
+              pinnedlocationsBP = [];
+              kmshrsBP = [];
+              document.getElementById('view-loadingpoi').style.display = "block";
+             document.getElementById('isSearchLocBP').value ="";
+              var db = openDatabase('aarescuepoidb', '1.0', 'AAPOIdatabase', 4 * 1024 * 1024);
+              db.transaction(function (tx) {
+                  var selectBP = 'select SiteName,SalesAreaName,Latitude,Longitude,Telno,StreetNo,StreetName,Suburb,PostCode,AddressLine1,ProvinceName,CoreArea,LocationType from FuelStation';
+
+                  tx.executeSql(selectBP, [], BPFuelStationresponse);
+              });
+              $.mobile.changePage('#BPPage', {
+                  transition: "none",
+                  reverse: false,
+                  changeHash: false
+              });
+              currentPage = 'BPPage';
+              pageData.push(currentPage);
+              document.getElementById('view-loadingpoi').style.display = "none";
+          }
+
+          function gotoBPSearchPage() {
+              $.mobile.changePage('#BPSearchPage', {
+                  transition: "none",
+                  reverse: false,
+                  changeHash: false
+              });
+              currentPage = 'BPSearchPage';
+              pageData.push(currentPage);
+          }
+
+          var locationsnearbyBP = [];
+          var destarrBP = [];
+          function BPFuelStationresponse(tx, result) {
+              //alert(result.rows.length);
+              //var locations = [];
+              var orgplace = new google.maps.LatLng(currentlat, currentlong);
+                if(currentlat == 0){
+                orgplace = new google.maps.LatLng(-26.138608, 27.905146);
+                currentlat = "-26.138608";
+                currentlong = "27.905146";
+                }
+              if (result.rows.length > 0) {
+                  for (var i = 0; i < result.rows.length; i++) {
+                      var rowdata = result.rows.item(i);
+                      var SiteName = rowdata["SiteName"];
+                      var SalesAreaName = rowdata["SalesAreaName"];
+                      var Latitude = rowdata["Latitude"];
+                      var Longitude = rowdata["Longitude"];
+                      var Telnumber = rowdata["Telno"];
+                      var StreetNo = rowdata["StreetNo"];
+                      var StreetName = rowdata["StreetName"];
+                      var Suburb = rowdata["Suburb"];
+                      var PostCode = rowdata["PostCode"];
+                      var AddressLine = rowdata["AddressLine1"];
+                      var ProvinceName = rowdata["ProvinceName"];
+                      var CoreArea = rowdata["CoreArea"];
+                      var LocationType = rowdata["LocationType"];
+
+
+
+
+                      var service = new google.maps.DistanceMatrixService();
+                      // alert(locations[i][0]);
+                     /* if (Latitude != 0) {
+
+                          var dest = new google.maps.LatLng(Latitude, Longitude); //[locname1, Latitude, Longitude,LocationID];
+                          if (destarrBP.length <= 24) {
+                              destarrBP.push(dest);
+                          }
+                          var locnb = [SiteName, SalesAreaName, Latitude, Longitude,Telnumber, StreetNo, StreetName, Suburb, PostCode, AddressLine, ProvinceName, CoreArea, LocationType];
+                          locationsnearbyBP.push(locnb);
+
+                      }*/
+                      if (Latitude != 0) {
+                          if (destarrBP.length <= 24) {
+                              var destar = getdistance(currentlat, currentlong, Latitude, Longitude);
+                              if (destar <= 50) {
+                                  var dest = new google.maps.LatLng(Latitude, Longitude);
+
+                                  destarrBP.push(dest);
+                                   var locnb = [SiteName, SalesAreaName, Latitude, Longitude,Telnumber, StreetNo, StreetName, Suburb, PostCode, AddressLine, ProvinceName, CoreArea, LocationType];
+                          locationsnearbyBP.push(locnb);
+                              }
+                          }
+                         
+
+                      }
+                  }
+                   if (destarrBP.length == 0) {
+                      var dest = new google.maps.LatLng(currentlat, currentlong);
+                      destarrBP.push(dest);
+                  }
+                  //current place
+                  //var orgplace = new google.maps.LatLng(currentlat, currentlong);
+                  //if(currentlat == 0){
+                 // orgplace = new google.maps.LatLng(-26.204103, 28.047305);
+                 // }
+                  service.getDistanceMatrix(
+         {
+             origins: [orgplace],
+             destinations: destarrBP,
+             travelMode: google.maps.TravelMode.DRIVING,
+             unitSystem: google.maps.UnitSystem.METRIC,
+             avoidHighways: false,
+             avoidTolls: false
+         }, callbackBP);
+              }
+ }
+
+ var searchdataBP = [];
+ var pinnedlocationsBP = [];
+          var kmshrsBP = [];
+ function callbackBP(response, status) {
+
+     var displayLocBP = document.getElementById('listaddressBP');
+     // alert("listaddressSA:::::" + tblhtml);
+     if (status != google.maps.DistanceMatrixStatus.OK) {
+         //alert('Error was: ' + status);
+         // document.getElementById('tbllocation').innerHTML=null;
+         //  document.getElementById('tbllocation').innerHTML= '<tr><td style="color:white;font-family:calibri;padding:10px;">The Where to Buy feature uses location based services to determine the closest sales office within 50kms to your current location. Please activate your Location Services.</td></tr>';
+     } else {
+        // alert(JSON.stringify(response));
+
+         var origins = response.originAddresses;
+         var destinations = response.destinationAddresses;
+         var outputDiv = document.getElementById('outputDivBP');
+         outputDiv.innerHTML = '';
+         deleteOverlays();
+         //alert(origins);
+         var data = '';
+         var localplace = new google.maps.LatLng(currentlat, currentlong);
+         if (currentlat == 0)//Mysore =12.29581 ,76.639381>
+         {
+               localplace = new google.maps.LatLng(-26.138608, 27.905146);
+                      currentlat = "-26.138608";
+                      currentlong = "27.905146";
+         }
+         //alert(localplace);
+         maploc = new google.maps.Map(document.getElementById("mapdispBP"), {
+             center: localplace,
+             zoom: 14,
+             mapTypeId: google.maps.MapTypeId.ROADMAP,
+             disableDefaultUI: true
+         });
+          var image = 'images/greenpointer.png';
+                  var point = new google.maps.LatLng(currentlat, currentlong);
+                  var marker = new google.maps.Marker({
+                      position: point,
+                      icon: image,
+                      map: maploc
+
+                  })
+                  //alert(point);
+                  google.maps.event.addListener(marker, "click", function (event) {
+
+                      if (infowindow) infowindow.close();
+
+
+                      var evelatitu = currentlong.split('.')[1];
+
+                      //alert(event.latLng.k);
+                      //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
+                      if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                          var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
+
+                          infowindow = new google.maps.InfoWindow({
+                              content: txthtml
+                          });
+                          infowindow.open(maploc, this);
+                      }
+                      else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                          var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
+                          infowindow = new google.maps.InfoWindow({
+                              content: txthtml
+                          });
+                          infowindow.open(maploc, this);
+                      }
+
+                  });
+         //-26.204103,28.047305>
+         var bounds = maploc.getBounds();
+         // tblloc.innerHTML=null;
+         // alert(destinations.length);
+       //  var pinnedlocationsBP = [];
+         for (var l = 0; l < origins.length; l++) {
+             var results = response.rows[l].elements;
+             // alert("results:::::" + results);
+             for (var j = 0; j < results.length-1; j++) {
+                 // alert(results[j].distance);
+                 if (results[j].distance != null) {
+                     // alert(parseInt(results[j].distance.value));
+                     if (parseInt(results[j].distance.value) <= 50000) {
+                        
+                         var locdet = locationsnearbyBP[j].toString().split(',');
+                         // alert(
+                         var image = 'images/pointerimg.png';
+                         /***Search page**** 15 hours 20 mins*/
+                         var hrsBP = "";
+                         var mindataBP = "";
+
+                         var dratnBP = results[j].duration.text;
+                         //alert("dratnSA"+dratnSA);
+                         if (dratnBP.split(' ').length > 2) {
+
+                             hrsBP = dratnBP.split(' ')[0] + ' ' + dratnBP.split(' ')[1];
+                             mindataBP = dratnBP.split(' ')[2] + ' ' + dratnBP.split(' ')[3];
+
+
+                         }
+                         else {
+                             if (dratnBP.split(' ')[1] == 'mins') {
+
+                                 mindataBP = dratnBP.split(' ')[0] + ' ' + dratnBP.split(' ')[1];
+
+                             }
+                             else {
+
+                                 hrsBP = dratnBP.split(' ')[0] + ' ' + dratnBP.split(' ')[1];
+                             }
+                         }
+                           var hrsdata = [results[j].distance.text, mindataBP, hrsBP];
+                                  kmshrsBP.push(hrsdata);
+                                  pinnedlocationsBP.push(locationsnearbyBP[j]);
+                       //  alert("text");
+                        
+                         /***Search page end*****/
+                         var point = new google.maps.LatLng(locdet[2], locdet[3]);
+                         var marker = new google.maps.Marker({
+                             position: point,
+                             icon: image,
+                             map: maploc
+                         })
+
+                         google.maps.event.addListener(marker, "click", function (event) {
+                             //alert('test');
+                             //alert(JSON.stringify(event));
+                             if (infowindow) infowindow.close();
+                             //pinnedlocationsBP.length
+                             for (var j = 0; j < 1; j++) {
+                                 //alert('tes');
+                                 var evelatitu = pinnedlocationsBP[j][3].split('.')[1];
+                                   if (pinnedlocationsBP[j][0] != null || pinnedlocationsBP[j][0] != undefined) {
+                                              pinnedlocationsBP[j][0] = pinnedlocationsBP[j][0];
+                                          }
+                                          else {
+                                              pinnedlocationsBP[j][0] = "-";
+                                          }
+                                          if (pinnedlocationsBP[j][4] != null || pinnedlocationsBP[j][4] != undefined) {
+                                              pinnedlocationsBP[j][4] = pinnedlocationsBP[j][4];
+                                          }
+                                          else {
+                                              pinnedlocationsBP[j][4] = "-";
+                                          }
+                                          if (pinnedlocationsBP[j][5] != null || pinnedlocationsBP[j][5] != undefined) {
+                                              pinnedlocationsBP[j][5] = pinnedlocationsBP[j][5];
+                                          }
+                                          else {
+                                              pinnedlocationsBP[j][5] = "-";
+                                          }
+                                           if (pinnedlocationsBP[j][6] != null || pinnedlocationsBP[j][6] != undefined) {
+                                              pinnedlocationsBP[j][6] = pinnedlocationsBP[j][6];
+                                          }
+                                          else {
+                                              pinnedlocationsBP[j][6] = "-";
+                                          }
+                                           if (pinnedlocationsBP[j][7] != null || pinnedlocationsBP[j][7] != undefined) {
+                                              pinnedlocationsBP[j][7] = pinnedlocationsBP[j][7];
+                                          }
+                                          else {
+                                              pinnedlocationsBP[j][7] = "-";
+                                          }
+                                 // alert(event.latLng.k);
+                                 if ((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                                   var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: " + pinnedlocationsBP[j][4] + "<br/>Physical Address:<br/>" +pinnedlocationsBP[j][5]+","+ pinnedlocationsBP[j][6]+","+pinnedlocationsBP[j][7]+"</div>";
+                                     infowindow = new google.maps.InfoWindow({
+                                         content: txthtml
+                                     });
+                                     infowindow.open(maploc, this);
+                                 }
+                                 else if (((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                                    var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: " + pinnedlocationsBP[j][4] + "<br/>Physical Address:<br/>" +pinnedlocationsBP[j][5]+","+ pinnedlocationsBP[j][6]+","+pinnedlocationsBP[j][7]+"</div>";
+                                     infowindow = new google.maps.InfoWindow({
+                                         content: txthtml
+                                     });
+                                     infowindow.open(maploc, this);
+                                 }
+                             }
+                         });
+                         marker.setMap(maploc);
+
+                     }
+                 }
+             }
+              for (var s = 0; s < pinnedlocationsBP.length; s++) {
+                            data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressBP">' + pinnedlocationsBP[s][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmBP">' + kmshrsBP[s][0] + '</div><div class="borderright"></div><div class="displaykm" id="displaytimeminBP">' + kmshrsBP[s][1] + '</div><div class="borderright"></div><div class="displaykmlast" id="displaytimehrsBP">' + kmshrsBP[s][2] + '</div><div class="borderright"></div></div>';
+                          //alert(results[j].distance.text);
+                          var searcharry = [pinnedlocationsBP[s][0], kmshrsBP[s][0], kmshrsBP[s][1], kmshrsBP[s][2]];
+                          searchdataBP.push(searcharry);
+                         }
+             displayLocBP.innerHTML = data;
+         }
+
+     }
+
+ }
+ var flagBPFS = 0;
+ function searchBP() {
+     var tblhtml = document.getElementById('listaddressBP');
+     tblhtml.innerHTML = "";
+     var data = "";
+     var flagBP = [];
+     var searchtxt = document.getElementById('isSearchLocBP').value;
+     //alert("searchtxt::::" + searchtxt);
+     if (searchtxt != "") {
+         for (var i = 0; i < searchdataBP.length; i++) {
+             // alert("searchdata[i][0]::::" + searchdata[i][0].toUpperCase());
+             var comparetext = searchdataBP[i][0].toUpperCase();
+             if (comparetext.indexOf(searchtxt.toUpperCase()) >= 0) {
+                 //flagAccomodation = 0;
+
+                 data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressBP">' + searchdataBP[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmBP">' + searchdataBP[i][1] + '</div><div class="displaykm" id="displaytimeminBP">' + searchdataBP[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdataBP[i][3] + '</div></div>';
+
+             }
+             else if (comparetext.indexOf(searchtxt.toUpperCase()) == -1) {
+                 flagBPFS = 1;
+                 flagBP.push(flagBPFS);
+             }
+         }
+     }
+     else {
+           jAlert("Please enter a keyword for search","");
+         for (var i = 0; i < searchdataBP.length; i++) {
+             // alert("searchdata[i][0]::::" + searchdata[i][0].toUpperCase());
+
+
+             data = data + '<div class="displayAddressKM">' +
+                                 '<div class="displayAddress" id="displayAddressBP">' + searchdataBP[i][0] + '</div>' +
+                                       '<div class="displaykm" id="displaykmBP">' + searchdataBP[i][1] + '</div><div class="displaykm" id="displaytimeminBP">' + searchdataBP[i][2] + '</div><div class="displaykmlast" id="displaytimehrs">' + searchdataBP[i][3] + '</div></div>';
+
+
+         }
+     }
+
+     if (flagBP.length == searchdataBP.length) {
+         data = data + '<div class="displayAddressKM"  >There is no searched items</div>';
+
+     }
+     else {
+
+     }
+
+     tblhtml.innerHTML = data;
+ }
+
+          var x;
+          var y;
+          var locationpassed = true;
+          if(currentlat == 0){
+          x = "-26.166146";
+          y = "28.040028";
+          locationpassed = false;
+          }
+          else{
+          x = currentlat;
+          y = currentlong;
+          locationpassed = true;
+          }
+          
+          function gotoHospitals() {
+              if (locationpassed == false) {
+                  alert("We were unable to determine your location");
+              }
+              $('#panic_nearby_hospitals_iframe').height(screen.height);
+            
+              document.getElementById("panic_nearby_hospitals_iframe").innerHTML = '<iframe style="width: 100%; height: 80%;" width="75%" height="75%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14&output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=q&source=embed&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14" style="color:#0000FF;text-align:left"></a></small>';
+             $.mobile.changePage('#HospitalsPage', {
+                  transition: "none",
+                  reverse: false,
+                  changeHash: false
+              });
+              currentPage = 'HospitalsPage';
+              pageData.push(currentPage);
+              
+          }
+      </script>
+      
+     
+
+</head>
+<body style="background-color: black">
+
+    <div id="view-loadingpoi" class="view" style="text-align: center; margin: auto; display: none;
+        z-index: 99; position: fixed;">
+        <div class="loadingimg">
+            Loading...
+        </div>
+    </div>
+    <div data-role="page" id="POIPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" >
+                        <img src="images/17AAlogo.png" alt="" />
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                       Points of Interest
+                    </td>
+                    <td width="10%" style="text-align: left!important;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+            <div class="listData" onclick="gotoQAAccomodation()">
+                <p class="Assist">
+                   AA QUALITY ASSURED ACCOMMODATION</p>
+            </div>
+            <div class="listData" onclick="gotoASAgents()">
+                <p class="Assist">
+                   AA ACCREDITED SALES AGENTS</p>
+            </div>
+            <div class="listData" onclick="gotoBPFillingStations()">
+              <p class="Assist">
+                  BP FILLING STATIONS</p>
+              
+            </div>
+            <div class="listData" onclick="gotoHospitals()">
+                <p class="Assist">
+                  HOSPITALS</p>
+             
+            </div>
+        </div>
+        <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="FuelStationPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                        <img src="images/2left-arrow.png" alt="" />
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                       Accomodation
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoFuelStationSearchPage()">
+                      <img src="images/rightmenu.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="content" style="padding: 0px!important;">
+            <div id="mapdisp" class="mapdisplay">
+                                            </div>
+                                            <div id="outputDiv">
+                                            </div>
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="FuelStationSearchPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                        
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                      Accomodation
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoQAAccomodation()">
+                      <img src="images/poiwhite.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+            <div class="searchdiv">
+                <table class="searchbox" width="100%" cellpadding="0" cellspacing="0">
+                    <tr id="search">
+                        <td>
+                            <input id="isSearchLoc" type="text" class="textbox" placeholder="Search" />
+                        </td>
+                        <td height="30%" align="center" onclick="searchaccommodation();">
+                            <img src="images/searchimg.png" class="imgstylesmall" id="serachimg" style="margin-top: 5px;" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+        
+        <!--displayAddress km-->
+        <div id="nomsgdisp">
+        
+         </div>
+        <div id="listaddress">
+        
+         </div>
+        
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="FuelStationSalesAgentPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                        <img src="images/2left-arrow.png" alt="" />
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                       Sales Agents
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoFuelStationSalesAgentSearchPage()">
+                      <img src="images/rightmenu.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+            <div id="mapdispSA" class="mapdisplay">
+                                            </div>
+                                            <div id="outputDivSA">
+                                            </div>
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="FuelStationSalesAgentsSearchPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                       
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                       Sales Agents
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoASAgents()">
+                      <img src="images/poiwhite.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+              <div class="searchdiv">
+        <table class="searchbox" width="100%" cellpadding="0" cellspacing="0">
+            <tr id="searchSAdetails">
+               
+                <td>
+                    <input id="isSearchLocSA" type="text" class="textbox" placeholder="Search" />
+                </td>
+                 <td height="30%" align="center" onclick="searchSalesAgents();">
+                    <img src="images/searchimg.png" class="imgstylesmall" id="Img1" style="margin-top: 5px;" />
+                </td>
+            </tr>
+            </table>
+        </div>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+      
+        <!--displayAddress km-->
+        <div id="listaddressSA">
+        
+         </div>
+        
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="BPPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                        <img src="images/2left-arrow.png" alt="" />
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                      BP Filling Stations
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoBPSearchPage()">
+                      <img src="images/rightmenu.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+            <div id="mapdispBP" class="mapdisplay"></div>
+             <div id="outputDivBP"></div>
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="BPSearchPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="10%" style="text-align: center!important;" onclick="gobackPage()">
+                       
+                    </td>
+                    <td width="80%" style="text-align: center!important;">
+                      BP Filling Stations
+                    </td>
+                    <td width="10%" style="text-align: left!important;" onclick="gotoBPFillingStations()">
+                      <img src="images/poiwhite.png" alt="" />
+                    </td>
+                </tr>
+            </table>
+              <div class="searchdiv">
+        <table class="searchbox" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+               
+                <td>
+                    <input id="isSearchLocBP" type="text" class="textbox" placeholder="Search" />
+                </td>
+                 <td height="30%" align="center" onclick="searchBP();">
+                    <img src="images/searchimg.png" class="imgstylesmall" id="Img2" style="margin-top: 5px;" />
+                </td>
+            </tr>
+            </table>
+        </div>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+      
+        <!--displayAddress km-->
+        <div id="listaddressBP">
+        
+         </div>
+        
+        </div>
+         <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    <div data-role="page" id="HospitalsPage" class="BodyBackground">
+        <div data-role="header" data-position="fixed">
+            <table class="HeaderTable" width="100%">
+                <tr class="HeaderTr">
+                    <td width="15%" style="text-align: center!important;" onclick="gotoPOIPage()">
+                        <img src="images/2left-arrow.png" alt="" />
+                    </td>
+                    <td width="70%" style="text-align: center!important;">
+                       Hospitals
+                    </td>
+                    <td width="15%" style="text-align: left!important;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="content" style="padding: 0px!important">
+              <div id="panic_nearby_hospitals_iframe"></div>
+        </div>
+        <div>
+               <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> 
+            </div>
+        
+    </div>
+    
+</body>
+</html>

@@ -17,7 +17,7 @@
     <script src="js/datepicker/jquery.datetimepicker.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script src="js/jquery.mobile-1.2.0.js" type="text/javascript"></script>
-    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="cordova-2.9.0.js"></script>
     <script src="js/MicrosoftAjax.js" type="text/javascript"></script>
         <script src="http://ppc.star-knowledge.com/AppService.svc/js" type="text/javascript"></script>
  
@@ -94,16 +94,13 @@ var currentPage = 'indexPage';
         var smallImage
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
-        try{
             document.addEventListener("backbutton", backKeyDown, true);
             pictureSource = navigator.camera.PictureSourceType;
             destinationType = navigator.camera.DestinationType;
-             }catch(ex){
-		}
         }
         /* Device back button Android*/
         function backKeyDown() {
-try{
+
             if ($("#popup_container").is(":visible") == true) {
 
             }
@@ -122,11 +119,9 @@ try{
                     changeHash: false
                 });
             }
-             }catch(ex){
-		}
         }
         function onPhotoFileSuccess(imageData) {
-try{
+
             $('#idDelImgPhotoImg').append('<div class="mainPhotodiv"><div class="deleteImg"><img id="ImgIdDelete" src="images/delete.png" alt="" onclick="deleteImg(this)" style="width: 100%" /></div> <div class="photodiv" id="idPhotoDiv"><img src="' + imageData + '" alt="" style="width: 100%;height:50%" id="LocPhotoImag" /></div></div>');
            
             $('#idAddPhotoImg').show();
@@ -143,20 +138,15 @@ try{
                 $('#idAddanotherphotoImg').hide();
                 $('#idAddPhotoImg').show();
             }
-             }catch(ex){
-		}
 
         }
         function capturePhotoWithFile() {
-           try{
-            navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-         }catch(ex){
-		}
+           
+            navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
         };
         function onFail(message) {
             //Failed because:camera cancelled.
            // alert('Failed because: ' + message);
-        
         }
 
         function deleteImg(ImgTag) {
@@ -171,13 +161,10 @@ NativeBridge.call("callfunction", [0,0,1]);
 </script>
 <script type="text/javascript">
     function capturePhotoWithFiledamagePhoto() {
-       try{
-        navigator.camera.getPicture(onPhotoFileSuccessdamagePhotoAccident, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-     }catch(ex){
-		}
+       
+        navigator.camera.getPicture(onPhotoFileSuccessdamagePhotoAccident, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessdamagePhotoAccident(imageDatadamagePhoto) {
-    try{
         $('#idDelImgDamagePhotoImg').append('<div class="mainPhotodiv"><div class="deleteImg"><img id="ImgIdDelete" src="images/delete.png" alt="" onclick="deleteImg(this)" style="width: 100%" /></div> <div class="photodiv" id="idPhotoDiv"><img src="' + imageDatadamagePhoto + '" alt="" style="width: 100%;height:50%" id="imgdamagePhoto"/></div></div>');
 
         $('#idAddDamagePhotoImg').show();
@@ -193,8 +180,6 @@ NativeBridge.call("callfunction", [0,0,1]);
             $('#idAddDamagePhotoImg').hide();
             $('#idAddanotherDamagephotoImg').show();
         }
-         }catch(ex){
-		}
 
     }
 
@@ -202,17 +187,11 @@ NativeBridge.call("callfunction", [0,0,1]);
 <script type="text/javascript">
         /*** FirstParty DLPhoto ***/
         function capturePhotoWithFileDriverLicenseNum() {
-        try{
-        navigator.camera.getPicture(onPhotoFileSuccessDriverLicenseNum, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-         }catch(ex){
-		}
+        navigator.camera.getPicture(onPhotoFileSuccessDriverLicenseNum, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
         }
         function onPhotoFileSuccessDriverLicenseNum(imageDataPath) {
-        try{
             $('#idDriverLicenseNumPhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgLNum(this)"/></div><div class="photodiv id="idPhotoDiv2"><img  src="' + imageDataPath + '" alt="" style="width: 50%; height: 30%" id="DLImag" /></div></div>');
         Licensephotos.push(document.getElementById('DLImag').src);
-         }catch(ex){
-		}
         }
         function deleteImgLNum(ImgTag) {
            $(ImgTag).parents('.mainPhotodiv').remove();
@@ -220,34 +199,23 @@ NativeBridge.call("callfunction", [0,0,1]);
 
         /*** FirstParty LicenseDisk Photo ***/
     function capturePhotoWithFileLicenseDisk() {
-    try{
-     navigator.camera.getPicture(onPhotoFileSuccessLicenseDisk, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-     }catch(ex){
-		}
+     navigator.camera.getPicture(onPhotoFileSuccessLicenseDisk, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessLicenseDisk(imageDataPathLDisk) {
-    try{
         $('#idLicenseDiskPhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgLDisk(this)"/></div><div class="photodiv" id="idPhotoDivLicDisk"><img  src="' + imageDataPathLDisk + '" alt="" style="width: 50%; height: 30%" id="PartyLocImg" /></div>');
    PartyLocphotos.push(document.getElementById('PartyLocImg').src);
-    }catch(ex){
-		}
     }
     function deleteImgLDisk(ImgTagDisk) {
         $(ImgTagDisk).parents('.mainPhotodiv').remove();
     }
     /*** FirstParty DamagePhoto  ***/
     function capturePhotoWithFileDamagePhoto() {
-try{
-        navigator.camera.getPicture(onPhotoFileSuccessDamagePhoto, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-     }catch(ex){
-		}
+
+        navigator.camera.getPicture(onPhotoFileSuccessDamagePhoto, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessDamagePhoto(imageDataPathDamagePhoto) {
-    try{
         $('#idDamagePhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgDamagePhoto(this)"/></div><div class="photodiv" id="idPhotoDivLicDisk"><img  src="' + imageDataPathDamagePhoto + '" alt="" style="width: 50%; height: 30%" id="PDmgPhotoImg" /></div>');
     PartyDmgphotos.push(document.getElementById('PDmgPhotoImg').src);
-     }catch(ex){
-		}
     }
     function deleteImgDamagePhoto(ImgTagDamagePhoto) {
         $(ImgTagDamagePhoto).parents('.mainPhotodiv').remove();
@@ -257,17 +225,11 @@ try{
 <script type="text/javascript">
     /*** SecondParty DLPhoto ***/
     function capturePhotoWithFileDriverLicenseNumSP() {
-    try{
-        navigator.camera.getPicture(onPhotoFileSuccessDriverLicenseNumSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-     }catch(ex){
-		}
+        navigator.camera.getPicture(onPhotoFileSuccessDriverLicenseNumSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessDriverLicenseNumSP(imageDataPathSP) {
-    try{
         $('#idSecondpartyDriverLicenseNumPhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgLNumSP(this)"/></div><div class="photodiv id="idPhotoDiv2"><img  src="' + imageDataPathSP + '" alt="" style="width: 50%; height: 30%" id="SPDLImg" /></div></div>');
      SPLicensephotos.push(document.getElementById('SPDLImg').src);
-      }catch(ex){
-		}
     }
     function deleteImgLNumSP(ImgTagSP) {
         $(ImgTagSP).parents('.mainPhotodiv').remove();
@@ -275,34 +237,23 @@ try{
 
     /*** SecondParty LicenseDisk Photo ***/
     function capturePhotoWithFileLicenseDiskSP() {
-    try{
-        navigator.camera.getPicture(onPhotoFileSuccessLicenseDiskSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI ,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG });
-    }catch(ex){
-		}
+        navigator.camera.getPicture(onPhotoFileSuccessLicenseDiskSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessLicenseDiskSP(imageDataPathLDiskSP) {
-    try{
         $('#idSecondpartyLicenseDiskPhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgLDiskSP(this)"/></div><div class="photodiv" id="idPhotoDivLicDisk"><img  src="' + imageDataPathLDiskSP + '" alt="" style="width: 50%; height: 30%" id="SPartyLocImg"/></div>');
    SPartyLocphotos.push(document.getElementById('SPartyLocImg').src);
-    }catch(ex){
-		}
     }
     function deleteImgLDiskSP(ImgTagDiskSP) {
         $(ImgTagDiskSP).parents('.mainPhotodiv').remove();
     }
     /*** SecondParty DamagePhoto  ***/
     function capturePhotoWithFileDamagePhotoSP() {
-      try{
-        navigator.camera.getPicture(onPhotoFileSuccessDamagePhotoSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI,targetWidth: 500,targetHeight: 500,sourceType: navigator.camera.PictureSourceType.CAMERA,encodingType: navigator.camera.EncodingType.JPEG  });
-     }catch(ex){
-		}
+      
+        navigator.camera.getPicture(onPhotoFileSuccessDamagePhotoSP, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
     }
     function onPhotoFileSuccessDamagePhotoSP(imageDataPathDamagePhotoSP) {
-    try{
         $('#idSecondpartyDamagePhoto').append('<div class="mainPhotodiv"><div style="margin-left: 110px"><img  src="images/delete.png" alt="" onclick="deleteImgDamagePhotoSP(this)"/></div><div class="photodiv" id="idPhotoDivLicDisk"><img  src="' + imageDataPathDamagePhotoSP + '" alt="" style="width: 50%; height: 30%" id="SPDmgImg" /></div>');
     SPartyDmgphotos.push(document.getElementById('SPDmgImg').src);
-     }catch(ex){
-		}
     }
     function deleteImgDamagePhotoSP(ImgTagDamagePhotoSP) {
         $(ImgTagDamagePhotoSP).parents('.mainPhotodiv').remove();
@@ -348,7 +299,6 @@ try{
  <!--Capture Vedio -->
  <script type="text/javascript" charset="utf-8">
      function captureSuccessVedio(mediaFiles) {
-     try{
        //  alert(mediaFiles.length);
           var i, len;
           var formatSuccess = function (mediaFile) {
@@ -362,8 +312,7 @@ try{
             
           };
           Playvedio();
-         }catch(ex){
-		}
+        
       }
 
 
@@ -373,12 +322,9 @@ try{
       }
 
       function captureVedio() {
-      try{
         //  alert("captureVedio")
         //  navigator.device.capture.captureAudio(captureSuccess, captureError, { limit: 2 });
           navigator.device.capture.captureVideo(captureSuccessVedio, captureErrorVedio, { limit: 1 });
-           }catch(ex){
-		}
       }
 
 
@@ -411,7 +357,6 @@ try{
 
 <script type="text/javascript" charset="utf-8">
     function captureSuccess(mediaFiles) {
-    try{
       //  alert(mediaFiles.length);
         var i, len;
         var formatSuccess = function (mediaFile) {
@@ -425,27 +370,19 @@ try{
 
         };
         PlayAudio();
- }catch(ex){
-		}
+
     }
 
 
     function captureError(error) {
-    try{
-        //var msg = 'An error occurred during capture: ' + error.code;
-        //navigator.notification.alert(msg, null, 'Uh oh!');
-         }catch(ex){
-		}
+        var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
     }
 
     function captureAudio() {
-    try{
      //   alert("captureAudio")
         //  navigator.device.capture.captureAudio(captureSuccess, captureError, { limit: 2 });
         navigator.device.capture.captureAudio(captureSuccess, captureError, { limit: 1 });
-        
-        }catch(ex){
-		}
     }
 
 
@@ -470,18 +407,16 @@ try{
     }
 
     function playAudioclick(id) {
-try{
+
       //  alert("ssds" + $('#capture-resultAudio').text());
         var my_media = null;
         my_media = new Media($('#capture-resultAudio').text());
         my_media.play();
-         }catch(ex){
-		}
     }
   
 /***second witness******/
 function captureSuccessswit(mediaFiles) {
-           try{
+           
             var i, len;
             var formatSuccess = function (mediaFile) {
                 document.getElementById('capture-dataswitAudio').innerHTML =
@@ -494,21 +429,18 @@ function captureSuccessswit(mediaFiles) {
 
             };
             PlaySwitAudio();
- }catch(ex){
-		}
+
         }
 
 
         function captureErrorswit(error) {
-            //var msg = 'An error occurred during capture: ' + error.code;
-            //navigator.notification.jAlert(msg, null, 'Uh oh!');
+            var msg = 'An error occurred during capture: ' + error.code;
+            navigator.notification.jAlert(msg, null, 'Uh oh!');
         }
 
         function captureAudioSWitness() {
-           try{
+           
             navigator.device.capture.captureAudio(captureSuccessswit, captureErrorswit, { limit: 1 });
-             }catch(ex){
-		}
         }
         
         function PlaySwitAudio() {
@@ -525,20 +457,15 @@ function captureSuccessswit(mediaFiles) {
             }
         }
         function deleteSWitAudio(ImgTagAudio) {
-        try{
             $(ImgTagAudio).parents('.mainPhotodiv').remove();
-             }catch(ex){
-		}
         }
 
         function playSWAudioclick(id) {
-try{
+
             //  jAlert("ssds" + $('#capture-resultswitAudio').text());
             var my_media = null;
             my_media = new Media($('#capture-resultswitAudio').text());
             my_media.play();
-             }catch(ex){
-		}
         }
             </script>
 <script type="text/javascript">
@@ -547,7 +474,6 @@ try{
         * Upload Loc picture
         */
         function uploadLocPicture(AID) {
-        try{
             var fileName;
             for(var i=0;i<Locphotos.length;i++)
              {
@@ -555,13 +481,10 @@ try{
                 //jAlert("Take picture or select picture from library first.");
                 return;
             }
-            
-             fileName =  Locphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-         /*   window.resolveLocalFileSystemURI(Locphotos[i], function (fileEntry) {
+            window.resolveLocalFileSystemURI(Locphotos[i], function (fileEntry) {
                 fileEntry.file(function (fileObj) {
                 fileName = fileObj.fullPath;});
-            });*/
+            });
             // Verify server has been entered
           //  server = "http://192.168.2.26:9068/Service.asmx/UploadFile";
           server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
@@ -591,14 +514,11 @@ try{
                 }, options);
             }
             }
-             }catch(ex){
-		}
         }
          /********
         * Upload DmgLoc picture
         */
         function uploadAccDmgPicture(AID) {
-        try{
             var fileName;
             for(var i=0;i<AccDamgphotos.length;i++)
              {
@@ -606,12 +526,10 @@ try{
                // jAlert("Take picture or select picture from library first.");
                 return;
             }
-             fileName =  AccDamgphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-           /* window.resolveLocalFileSystemURI(AccDamgphotos[i], function (fileEntry) {
+            window.resolveLocalFileSystemURI(AccDamgphotos[i], function (fileEntry) {
                 fileEntry.file(function (fileObj) {
                 fileName = fileObj.fullPath;});
-            });*/
+            });
             // Verify server has been entered
             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
             if (server) {
@@ -639,24 +557,19 @@ try{
                 }, options);
             }
             }
-             }catch(ex){
-		}
         }
         function uploadDLicensePicture(AID) {
-        try{
          var fileName;
          for (var i = 0; i < Licensephotos.length; i++) {
              if (!Licensephotos[i]) {
                 // jAlert("Take picture or select picture from library first.");
                  return;
              }
-               fileName =  Licensephotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-          /*   window.resolveLocalFileSystemURI(Licensephotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(Licensephotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -685,24 +598,19 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
          function uploadPartyLocPicture(AID) {
-         try{
          var fileName;
          for (var i = 0; i < PartyLocphotos.length; i++) {
              if (!PartyLocphotos[i]) {
                 // jAlert("Take picture or select picture from library first.");
                  return;
              }
-               fileName =  PartyLocphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-            /* window.resolveLocalFileSystemURI(PartyLocphotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(PartyLocphotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -731,24 +639,19 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
       function uploadPartyDmgPicture(AID) {
-      try{
          var fileName;
          for (var i = 0; i < PartyDmgphotos.length; i++) {
              if (!PartyDmgphotos[i]) {
                 // jAlert("Take picture or select picture from library first.");
                  return;
              }
-               fileName =  PartyDmgphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-           /*  window.resolveLocalFileSystemURI(PartyDmgphotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(PartyDmgphotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -777,24 +680,19 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
      function uploadSPDLicensePicture(AID) {
-     try{
          var fileName;
          for (var i = 0; i < SPLicensephotos.length; i++) {
              if (!SPLicensephotos[i]) {
                //  jAlert("Take picture or select picture from library first.");
                  return;
              }
-               fileName =  SPLicensephotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-            /* window.resolveLocalFileSystemURI(SPLicensephotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(SPLicensephotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -823,24 +721,19 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
      function uploadSecondPartyLocPicture(AID) {
-     try{
          var fileName;
          for (var i = 0; i < SPartyLocphotos.length; i++) {
              if (!SPartyLocphotos[i]) {
                 // jAlert("Take picture or select picture from library first.");
                  return;
              }
-               fileName =  SPartyLocphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-           /*  window.resolveLocalFileSystemURI(SPartyLocphotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(SPartyLocphotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -869,24 +762,19 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
      function uploadSecondPartyDmgPicture(AID) {
-     try{
          var fileName;
          for (var i = 0; i < SPartyDmgphotos.length; i++) {
              if (!SPartyDmgphotos[i]) {
                  //jAlert("Take picture or select picture from library first.");
                  return;
              }
-              fileName =  SPartyDmgphotos[i];
-          /*** removed by shwetha (06-11-2014)***/
-         /*    window.resolveLocalFileSystemURI(SPartyDmgphotos[i], function (fileEntry) {
+             window.resolveLocalFileSystemURI(SPartyDmgphotos[i], function (fileEntry) {
                  fileEntry.file(function (fileObj) {
                      fileName = fileObj.fullPath;
                  });
-             });*/
+             });
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
              if (server) {
@@ -915,8 +803,6 @@ try{
                  }, options);
              }
          }
-          }catch(ex){
-		}
      }
       /* uploadVedio */
 
@@ -924,7 +810,6 @@ try{
 
         function uploadVedio(AID)
         {
-        try{
             var fileName = "";
     	// Get URI of picture to upload
         //var img = document.getElementById('camera_image');
@@ -934,16 +819,14 @@ try{
            // document.getElementById('camera_status').innerHTML = "Take picture or select picture from library first.";
             return;
         }
-          fileName =  imageURI;
-          /*** removed by shwetha (06-11-2014)***/
-    /*    window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
+        window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
             fileEntry.file(function (fileObj) {
 
                 fileName = fileObj.fullPath;
 
 
             });
-        });*/
+        });
         // Verify server has been entered
         server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
         if (server) {
@@ -972,11 +855,8 @@ try{
                     //alert("system temprovarily unavailable.Please try later");
                 }, options);
         }
-         }catch(ex){
-		}
         }
         function uploadAudio(AID) {
-        try{
             var fileName = "";
             
             var imageURI = $('#capture-resultAudio').text();
@@ -985,16 +865,14 @@ try{
               //  document.getElementById('camera_status').innerHTML = "Take picture or select picture from library first.";
                 return;
             }
-            fileName =  imageURI;
-          /*** removed by shwetha (06-11-2014)***/
-            /*window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
+            window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
                 fileEntry.file(function (fileObj) {
 
                     fileName = fileObj.fullPath;
 
 
                 });
-            });*/
+            });
             // Verify server has been entered
             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
             if (server) {
@@ -1023,11 +901,8 @@ try{
                     //alert("system temprovarily unavailable.Please try later");
                 }, options);
             }
-             }catch(ex){
-		}
         }
         function uploadAudioSwit(AID) {
-        try{
             var fileName = "";
             
             var imageURI = $('#capture-resultswitAudio').text();
@@ -1036,16 +911,14 @@ try{
                // document.getElementById('camera_status').innerHTML = "Take picture or select picture from library first.";
                 return;
             }
-            fileName =  imageURI;
-          /*** removed by shwetha (06-11-2014)***/
-            /*window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
+            window.resolveLocalFileSystemURI(imageURI, function (fileEntry) {
                 fileEntry.file(function (fileObj) {
 
                     fileName = fileObj.fullPath;
 
 
                 });
-            });*/
+            });
             // Verify server has been entered
             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
             if (server) {
@@ -1074,8 +947,6 @@ try{
                     //alert("system temprovarily unavailable.Please try later");
                 }, options);
             }
-             }catch(ex){
-		}
         }
 </script>
 <script type="text/javascript">
@@ -1500,8 +1371,8 @@ var TimeHistroy = $('#txttimepicker').val();
             <div class="fieldnameAccident"> Notes</div>
             <div class="inputFields"><textarea rows="4" cols="150" class="inputText" id="txtFirstpartyNotes"></textarea></div>
               
-              <div style="background:#747474!important;padding:10px;margin-top:20px; height:20px;">
-              <div style="margin-top:0px; float:left; width:100%; color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Vehicle</div>
+              <div style="background:#747474!important;padding:10px;margin-top:20px;">
+              <div style="color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Vehicle</div>
               </div>
            
 
@@ -1563,13 +1434,9 @@ var TimeHistroy = $('#txttimepicker').val();
                 <div class="photodiv">
                     <img src="images/5mount-img.png" alt="" style="width: 50%; height: 50%" /></div>-->
             </div>
-            <!--     <div style="background:#747474!important;padding:10px;margin-top:20px;">
+               <div style="background:#747474!important;padding:10px;margin-top:20px;">
               <div style="color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Insurance</div>
-              </div>-->
-              
-              <div class="PartyInsurance" style="background-color: #747474 !important; ">
-				<div style="color:#ffffff;">3rd Party Insurance</div>
-			</div>
+              </div>
            
             <div class="fieldnameAccident">Insurer</div>
             <div class="inputFields"><input type="text" class="inputText" id="txtFirstpartyInsurer"/></div>
@@ -1682,8 +1549,8 @@ var TimeHistroy = $('#txttimepicker').val();
             <div class="fieldnameAccident"> Notes</div>
             <div class="inputFields"><textarea rows="4" cols="150" class="inputText" id="txtSecondpartyNotes"></textarea></div>
               
-              <div style="background:#747474!important;padding:10px;margin-top:20px; height:20px;">
-              <div style="margin-top:0px; float:left; width:100%; color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Vehicle</div>
+              <div style="background:#747474!important;padding:10px;margin-top:20px;">
+              <div style="color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Vehicle</div>
               </div>
            
 
@@ -1737,13 +1604,9 @@ var TimeHistroy = $('#txttimepicker').val();
                 <div class="photodiv">
                     <img src="images/5mount-img.png" alt="" style="width: 50%; height: 50%" /></div>-->
             </div>
-              <!--   <div style="background:#747474!important;padding:10px;margin-top:20px;">
+               <div style="background:#747474!important;padding:10px;margin-top:20px;">
               <div style="color: #ffffff!important;font-family:Arial;font-size: 16px;font-weight: bold;text-shadow:none">3rd Party Insurance</div>
-              </div>-->
-              
-               <div class="PartyInsurance" style="background-color: #747474 !important; ">
-				<div style="color:#ffffff;">3rd Party Insurance</div>
-			</div>
+              </div>
                   
             <div class="fieldnameAccident">Insurer</div>
             <div class="inputFields"><input type="text" class="inputText" id="txtSecondpartyInsurer"/></div>
