@@ -24,6 +24,7 @@
  * @constructor
  */
 cordova.define("org.apache.cordova.file.FileUploadResult", function(require, exports, module) {
+	
 module.exports = function FileUploadResult(size, code, content) {
 	this.bytesSent = size;
 	this.responseCode = code;

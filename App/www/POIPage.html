@@ -338,7 +338,7 @@ dBcall();
                       var Phnum = rowdata["PhoneNumber"];
                     
 
-
+                   //   alert("pnum1"+Phnum);
                     
                     // alert(locations[i][0]);
                
@@ -475,14 +475,14 @@ document.getElementById('view-loadingpoi').style.display = "block";
 
                     var evelatitu = currentlong.split('.')[1];
 
-                    if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                   /*  if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                         var txthtml = "<div class='mappopuploc'>MyLocation<br/>" + response.originAddresses[0] + "</div>";
                         infowindow = new google.maps.InfoWindow({
                             content: txthtml
                         });
                         infowindow.open(maploc, this);
                     }
-                    else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                    else  */if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
                         var txthtml = "<div class='mappopuploc'>MyLocation<br/>" + response.originAddresses[0] + "</div>";
                         infowindow = new google.maps.InfoWindow({
                             content: txthtml
@@ -552,8 +552,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                                     //alert(JSON.stringify(event));
                                     if (infowindow) infowindow.close();
                                     //pinnedlocations.length
-                                    for (var j = 0; j < 1; j++) {
-                                        //alert('tes');
+                                    for (var j = 0; j < pinnedlocations.length; j++) {
                                         var evelatitu = pinnedlocations[j][2].split('.')[1];
                                        // alert(pinnedlocations[j][0]);
                                         //alert(pinnedlocations[j][0]+':::::'+pinnedlocations[j][1], pinnedlocations[j][2], pinnedlocations[j][3], pinnedlocations[j][4], pinnedlocations[j][5], pinnedlocations[j][6]);
@@ -582,18 +581,53 @@ document.getElementById('view-loadingpoi').style.display = "block";
                                         else {
                                             pinnedlocations[j][4] = " -";
                                         }
+                                        
+                                        var phoneAcc = pinnedlocations[j][5];
+                                        var phoneAccPin = phoneAcc.split("  ");
+                                        var ph1;
+                                        var ph2;
+                                        var ph3;
+
+                                        if (phoneAccPin[0] != undefined || phoneAccPin[0] != null) {
+                                            ph1 = phoneAccPin[0];
+                                        }
+                                        else {
+                                            ph1 = "";
+                                        }
+                                        if (phoneAccPin[1] != undefined || phoneAccPin[1] != null) {
+                                            ph2 = phoneAccPin[1];
+                                        }
+                                        else {
+                                            ph2 = "";
+                                        }
+
+                                        if (phoneAccPin[2] != undefined || phoneAccPin[2] != null) {
+
+                                            ph3 = phoneAccPin[2];
+                                        }
+                                        else {
+                                            ph3 = "";
+                                        }
+
+
+                                        
+                                        
+                                        
                                         // alert(event.latLng.k);
-                                        if ((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocations[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                                       /*  if ((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocations[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                                              var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber:" + pinnedlocations[j][5] + "<br/>" + "Weburl: <a href='" + pinnedlocations[j][4] + "' target='_blank'>" + pinnedlocations[j][4] + "</a></div>";
                                             infowindow = new google.maps.InfoWindow({
                                                 content: txthtml
                                             });
                                             infowindow.open(maploc, this);
                                         }
-                                        else if (((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocations[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                                        else */ if (((pinnedlocations[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((pinnedlocations[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
                                             //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
-                                             var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber:" + pinnedlocations[j][5] + "<br/>" + "Weburl: <a href='" + pinnedlocations[j][4] + "' target='_blank'>" + pinnedlocations[j][4] + "</a></div>";
-                                            infowindow = new google.maps.InfoWindow({
+                                            // var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber:" + pinnedlocations[j][5] + "<br/>" + "Weburl: <a href='" + pinnedlocations[j][4] + "' target='_blank'>" + pinnedlocations[j][4] + "</a></div>";
+                                           
+                                            var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocations[j][0] + "<br/>" + "Rating: " + pinnedlocations[j][1] + "<br/>" + "PhoneNumber: <a href='tel:" + ph1 + "' target='_blank' >" + ph1 + "</a>" + " " + "<a href='tel:" + ph2 + "' target='_blank' >" + ph2 + "</a>" + " " + "<a href='tel:" + ph3 + "' target='_blank' >" + ph3 + "</a>" + "<br/>" + "<div onclick='geturl(this);' id='" + pinnedlocations[j][4] + "'>Weburl: <a >" + pinnedlocations[j][4] + "</a><div></div>";
+
+                                             infowindow = new google.maps.InfoWindow({
                                                 content: txthtml
                                             });
                                             infowindow.open(maploc, this);
@@ -625,6 +659,13 @@ document.getElementById('view-loadingpoi').style.display = "block";
             
 
         }
+        
+         function geturl(cntrl) {
+
+             window.jsinterface.getjsurl(cntrl.id);
+
+         }
+        
         function addMarker(location, isDestination) {
             var icon;
             if (isDestination) {
@@ -871,7 +912,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
 
                       //alert(event.latLng.k);
                       //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
-                      if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                     /*  if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                           var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
 
                           infowindow = new google.maps.InfoWindow({
@@ -879,7 +920,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                           });
                           infowindow.open(maploc, this);
                       }
-                      else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                      else */ if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
                           var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
                           infowindow = new google.maps.InfoWindow({
                               content: txthtml
@@ -948,7 +989,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                              //alert(JSON.stringify(event));
                              if (infowindow) infowindow.close();
                              //pinnedlocationsSA.length
-                             for (var j = 0; j < 1; j++) {
+                             for (var j = 0; j < pinnedlocationsSA.length; j++) {
                                  //alert('tes');
                                  var evelatitu = pinnedlocationsSA[j][3].split('.')[1];
                                   if (pinnedlocationsSA[j][0] != null || pinnedlocationsSA[j][0] != undefined) {
@@ -994,7 +1035,41 @@ document.getElementById('view-loadingpoi').style.display = "block";
                                           else {
                                               pinnedlocationsSA[j][5] = "-";
                                           }
-                                
+                                          
+                                          /*****added by supriya to give link to phonenumber and web url******/
+                                           var EmailSA = pinnedlocationsSA[j][5];
+                                            var EmailSAPin = EmailSA.replace(" ", ";");
+
+                                            var phoneSA = pinnedlocationsSA[j][4];
+                                            var phoneSAPin = phoneSA.split("  ");
+
+                                            var ph1;
+                                            var ph2;
+                                            var ph3;
+
+                                            if (phoneSAPin[0] != undefined || phoneSAPin[0] != null) {
+                                                ph1 = phoneSAPin[0];
+                                            }
+                                            else {
+                                                ph1 = "";
+                                            }
+                                            if (phoneSAPin[1] != undefined || phoneSAPin[1] != null) {
+                                                ph2 = phoneSAPin[1];
+                                            }
+                                            else {
+                                                ph2 = "";
+                                            }
+
+                                            if (phoneSAPin[2] != undefined || phoneSAPin[2] != null) {
+
+                                                ph3 = phoneSAPin[2];
+                                            }
+                                            else {
+                                                ph3 = "";
+                                            }
+                                          
+                                          
+                                /* 
                                  if ((pinnedlocationsSA[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocationsSA[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                                       var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "Physical Address: <br/>" + pinnedlocationsSA[j][7] + "," + pinnedlocationsSA[j][8] + "," + pinnedlocationsSA[j][9] + "," +pinnedlocationsSA[j][10]+ "<br/>PhoneNumber: " + pinnedlocationsSA[j][4] + "<br/>"+"Email: "+pinnedlocationsSA[j][5]+"</div>";
                                      infowindow = new google.maps.InfoWindow({
@@ -1003,9 +1078,16 @@ document.getElementById('view-loadingpoi').style.display = "block";
                                      
                                      infowindow.open(maploc, this);
                                  }
-                                 else if (((pinnedlocationsSA[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocationsSA[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
-                                       var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "Physical Address: <br/>" + pinnedlocationsSA[j][7] + "," + pinnedlocationsSA[j][8] + "," + pinnedlocationsSA[j][9] + "," +pinnedlocationsSA[j][10]+ "<br/>PhoneNumber: " + pinnedlocationsSA[j][4] + "<br/>"+"Email: "+pinnedlocationsSA[j][5]+"</div>";
-                                     infowindow = new google.maps.InfoWindow({
+                                 else */ if (((pinnedlocationsSA[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((pinnedlocationsSA[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
+                                     //  var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "Physical Address: <br/>" + pinnedlocationsSA[j][7] + "," + pinnedlocationsSA[j][8] + "," + pinnedlocationsSA[j][9] + "," +pinnedlocationsSA[j][10]+ "<br/>PhoneNumber: " + pinnedlocationsSA[j][4] + "<br/>"+"Email: "+pinnedlocationsSA[j][5]+"</div>";
+                                   
+                                     /**physical address is removed by supriya and link is given to email and phonenumber***/
+                                    
+                                       var txthtml = "<div class='mappopuploc'>Venue Name: " + pinnedlocationsSA[j][0] + "<br/>" + "PhoneNumber: <a href='tel:" + ph1 + "' target='_blank' >" + ph1 + "</a>" + " " + "<a href='tel:" + ph2 + "' target='_blank' >" + ph2 + "</a>" + " " + "<a href='tel:" + ph3 + "' target='_blank' >" + ph3 + "</a>" + "</br>" + "Email: <a href='mailto:" + pinnedlocationsSA[j][5] + "'>" + pinnedlocationsSA[j][5] + "</a></div>";
+
+                                       
+                                       //pinnedlocationsSA[j][4]
+                                       infowindow = new google.maps.InfoWindow({
                                          content: txthtml
                                      });
                                      infowindow.open(maploc, this);
@@ -1220,6 +1302,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                       currentlat = "-26.138608";
                       currentlong = "27.905146";
          }
+         
          //alert(localplace);
          maploc = new google.maps.Map(document.getElementById("mapdispBP"), {
              center: localplace,
@@ -1245,7 +1328,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
 
                       //alert(event.latLng.k);
                       //var txthtml = "<div class='mappopuploc'>" + pinnedlocations[j][0] + "<br/> <a href='" + pinnedlocations[j][3] + "' target=_blank>" + pinnedlocations[j][3] + "</a></div>";
-                      if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                    /*   if ((currentlat.replace(/^\s+|\s+$/g, '') == event.latLng.k) && (currentlong.replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                           var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
 
                           infowindow = new google.maps.InfoWindow({
@@ -1253,7 +1336,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                           });
                           infowindow.open(maploc, this);
                       }
-                      else if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
+                      else  */if (((currentlat.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((currentlong.replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
                           var txthtml = "<div class='mappopuploc'>MyLocation</br>" + response.originAddresses[0] + "</div>";
                           infowindow = new google.maps.InfoWindow({
                               content: txthtml
@@ -1321,7 +1404,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
                              //alert(JSON.stringify(event));
                              if (infowindow) infowindow.close();
                              //pinnedlocationsBP.length
-                             for (var j = 0; j < 1; j++) {
+                             for (var j = 0; j <  pinnedlocationsBP.length; j++) {
                                  //alert('tes');
                                  var evelatitu = pinnedlocationsBP[j][3].split('.')[1];
                                    if (pinnedlocationsBP[j][0] != null || pinnedlocationsBP[j][0] != undefined) {
@@ -1354,17 +1437,49 @@ document.getElementById('view-loadingpoi').style.display = "block";
                                           else {
                                               pinnedlocationsBP[j][7] = "-";
                                           }
+                                           
+                                           /*******Added by supriya to give link to phone***/
+                                           
+                                             var phoneBP = pinnedlocationsBP[j][4];
+                                            var phoneBPPin = phoneBP.split("  ");
+                                            var ph1;
+                                            var ph2;
+                                            var ph3;
+
+                                            if (phoneBPPin[0] != undefined || phoneBPPin[0] != null) {
+                                                ph1 = phoneBPPin[0];
+                                            }
+                                            else {
+                                                ph1 = "";
+                                            }
+                                            if (phoneBPPin[1] != undefined || phoneBPPin[1] != null) {
+                                                ph2 = phoneBPPin[1];
+                                            }
+                                            else {
+                                                ph2 = "";
+                                            }
+
+                                            if (phoneBPPin[2] != undefined || phoneBPPin[2] != null) {
+
+                                                ph3 = phoneBPPin[2];
+                                            }
+                                            else {
+                                                ph3 = "";
+                                            }
                                  // alert(event.latLng.k);
-                                 if ((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
+                                 /* if ((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '') == event.latLng.k) && (pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '') == event.latLng.A.toFixed(evelatitu.length))) {
                                    var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: " + pinnedlocationsBP[j][4] + "<br/>Physical Address:<br/>" +pinnedlocationsBP[j][5]+","+ pinnedlocationsBP[j][6]+","+pinnedlocationsBP[j][7]+"</div>";
                                      infowindow = new google.maps.InfoWindow({
                                          content: txthtml
                                      });
                                      infowindow.open(maploc, this);
                                  }
-                                 else if (((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.k)) != -1) && ((pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.A.toFixed(evelatitu.length))) != -1)) {
-                                    var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: " + pinnedlocationsBP[j][4] + "<br/>Physical Address:<br/>" +pinnedlocationsBP[j][5]+","+ pinnedlocationsBP[j][6]+","+pinnedlocationsBP[j][7]+"</div>";
-                                     infowindow = new google.maps.InfoWindow({
+                                 else */ if (((pinnedlocationsBP[j][2].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lat())) != -1) && ((pinnedlocationsBP[j][3].replace(/^\s+|\s+$/g, '').indexOf(event.latLng.lng().toFixed(evelatitu.length))) != -1)) {
+                                  //  var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: " + pinnedlocationsBP[j][4] + "<br/>Physical Address:<br/>" +pinnedlocationsBP[j][5]+","+ pinnedlocationsBP[j][6]+","+pinnedlocationsBP[j][7]+"</div>";
+                                   
+                                    var txthtml = "<div class='mappopuploc'>Name: " + pinnedlocationsBP[j][0] + "<br/>" + "PhoneNumber: <a href='tel:" + ph1 + "' target='_blank' >" + ph1 + "</a>" + " " + "<a href='tel:" + ph2 + "' target='_blank' >" + ph2 + "</a>" + " " + "<a href='tel:" + ph3 + "' target='_blank' >" + ph3 + "</a>" + "<br/>Physical Address:<br/>" + pinnedlocationsBP[j][5] + " " + pinnedlocationsBP[j][6] + ", " + pinnedlocationsBP[j][7] + "</div>";
+
+                                    infowindow = new google.maps.InfoWindow({
                                          content: txthtml
                                      });
                                      infowindow.open(maploc, this);
@@ -1461,7 +1576,7 @@ document.getElementById('view-loadingpoi').style.display = "block";
               }
               $('#panic_nearby_hospitals_iframe').height(screen.height);
             
-              document.getElementById("panic_nearby_hospitals_iframe").innerHTML = '<iframe style="width: 100%; height: 80%;" width="75%" height="75%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14&output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=q&source=embed&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14" style="color:#0000FF;text-align:left"></a></small>';
+              document.getElementById("panic_nearby_hospitals_iframe").innerHTML = '<iframe style="width: 100%; height: 110%;" width="75%" height="75%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14&output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=q&source=embed&hl=en&geocode=&amp;q=hospital&aq=&amp;sll=' + x + ',' + y + '&amp;sspn=0.040066,0.077162&ie=UTF8&hq=hospital&hnear=&amp;t=m&ll=' + x + ',' + y + '&amp;spn=0.007705,0.008669&z=14" style="color:#0000FF;text-align:left"></a></small>';
              $.mobile.changePage('#HospitalsPage', {
                   transition: "none",
                   reverse: false,
@@ -1471,6 +1586,8 @@ document.getElementById('view-loadingpoi').style.display = "block";
               pageData.push(currentPage);
               
           }
+          
+          
       </script>
       
      

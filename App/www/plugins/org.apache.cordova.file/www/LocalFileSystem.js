@@ -19,6 +19,7 @@
  *
 */
 cordova.define("org.apache.cordova.file.LocalFileSystem", function(require, exports, module) {
+	
 exports.TEMPORARY = 0;
 exports.PERSISTENT = 1;
 });

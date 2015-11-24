@@ -29,6 +29,7 @@
  * size {Number} size of the file in bytes
  */
 cordova.define("org.apache.cordova.file.File", function(require, exports, module) {
+	
 var File = function(name, localURL, type, lastModifiedDate, size){
     this.name = name || '';
     this.localURL = localURL || null;

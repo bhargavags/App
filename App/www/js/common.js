@@ -4936,7 +4936,19 @@ db.transaction(function (tx) {
 
     tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('Zuurberg Mountain Village', 2, -33.31667, 25.68333, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', NULL, 'henri@addo.co.za')");
 
-    
+   /* tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road', 2, 12.321931, 76.622002, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road 1', 2, 12.321974, 76.621796, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650','+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road 2', 2, 12.322163, 76.621538, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650','+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road 3', 2, 12.322519, 76.621217, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road 6', 2, 12.323069, 76.620146, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('5th main Adipampa road 5', 2, 12.322708, 76.620702, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('4th main Adipampa road mysore', 2, 12.322477, 76.622311, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('4th main Adipampa road mysore 1', 2, 12.322619, 76.622131, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650','+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('4th main Adipampa road mysore 2', 2, 12.322797, 76.621874, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650','+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('6th main mysore', 2, 12.322084, 76.620903, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('6th main mysore 1', 2, 12.321675, 76.621536, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+    tx.executeSql("INSERT INTO AAAccommodation (Name, AA_rating, Latitude, Longitude, Seopermalink, PhoneNumber, Email) VALUES ('3rd main mysore', 2, 12.323662, 76.622389, 'http://www.aaholidays.co.za/accommodation/south-africa/eastern-cape/addo/zuurberg-mountain-village-PA43650', '+27 (0) 47 532 5305', 'henri@addo.co.za')");
+*/
     //Acc end
 
     //sales
@@ -4986,8 +4998,11 @@ db.transaction(function (tx) {
 
     tx.executeSql("INSERT INTO SalesAgent (Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal) VALUES ('Tyger Valley', NULL, -33.871522, 18.636274, '(021) 9142265', 'elaine.te@galileosa.co.za      jan.te@galileosa.co.za', NULL, 'Shop 597F, Entrance 8, Upper Level, Tyger Valley Shopping Centre, Willie van Schoor Avenue', 'Bellville', 'Western Cape', 'P.O. Box 4390, Tygervalley,7536')");
 
-    tx.executeSql("INSERT INTO SalesAgent (Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal) VALUES ('Garsfontei', NULL, -25.49548, 28.18873, '(012)9408999', 'teller2@voetspore.co.za  raymond@voetspore.co.za', NULL, 'Shop 315, Woodlands Boulevard, c/0 Garsfontein & De Villa Bois Str', 'Pretoria', 'Gauteng', 'P.O. Box 92256, Mooikloof,0059')");
+   /* tx.executeSql("INSERT INTO SalesAgent (Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal) VALUES ('Garsfontei', NULL, -25.49548, 28.18873, '(012)9408999', 'teller2@voetspore.co.za  raymond@voetspore.co.za', NULL, 'Shop 315, Woodlands Boulevard, c/0 Garsfontein & De Villa Bois Str', 'Pretoria', 'Gauteng', 'P.O. Box 92256, Mooikloof,0059')");
+    tx.executeSql("INSERT INTO SalesAgent (Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal) VALUES ('Tyger Valley', NULL, 12.321675, 76.621536, '(021) 9142265', 'elaine.te@galileosa.co.za      jan.te@galileosa.co.za', NULL, 'Shop 597F, Entrance 8, Upper Level, Tyger Valley Shopping Centre, Willie van Schoor Avenue', 'Bellville', 'Western Cape', 'P.O. Box 4390, Tygervalley,7536')");
 
+    tx.executeSql("INSERT INTO SalesAgent (Name, Catery, Lat, Long, Tel, Email, Website, AddressStreet, AddressSuburb, AddressCity, AddressPostal) VALUES ('Garsfontei', NULL, 12.323662, 76.622389, '(012)9408999', 'teller2@voetspore.co.za  raymond@voetspore.co.za', NULL, 'Shop 315, Woodlands Boulevard, c/0 Garsfontein & De Villa Bois Str', 'Pretoria', 'Gauteng', 'P.O. Box 92256, Mooikloof,0059')");
+*/
     //sales end
 
     // fUEL STATION
@@ -6039,6 +6054,14 @@ db.transaction(function (tx) {
 
     tx.executeSql("INSERT INTO FuelStation (SiteName, SalesAreaName, SalesManager, Latitude, Longitude, DealerName, Telno, StreetNo, StreetName, Suburb, PostCode, AddressLine1, ProvinceName, CoreArea, LocationType, PricingZone, ExpressShop, ShopSize, WildBean, QSR, CarWash, ATM) VALUES ('Loskop Vallei Vulstasie', 'Rtl Sales Ops-Gauteng North', 'Ledwaba, Emma', -25.16441, 29.39499, 'Jardin, Johnnie (MR J)', '013 2625565', NULL, 'Cnr Hereford & Van Riebeeck Street', 'GROBLERSDAL', 450, NULL, 'Mpumalanga', 'Core 4 - The Rest', NULL, '10C', '--', '--', '--', '--', '--', '--')");
 
+    
+    
+    
+//    tx.executeSql("INSERT INTO FuelStation (SiteName, SalesAreaName, SalesManager, Latitude, Longitude, DealerName, Telno, StreetNo, StreetName, Suburb, PostCode, AddressLine1, ProvinceName, CoreArea, LocationType, PricingZone, ExpressShop, ShopSize, WildBean, QSR, CarWash, ATM) VALUES ('Lorraine Motors', 'Rtl Sales Ops-Cape Tow', 'Joubert, Bradley', 12.321675, 76.621536, 'Easton, Barry (MR B)', '041 367 2319', 136, 'Luneville Road', 'LORRAINE', 6070, 136, 'Eastern Cape', 'Core 4 - The Rest', NULL, '01A', '--', '--', '--', '--', '--', '--')");
+//
+//    tx.executeSql("INSERT INTO FuelStation (SiteName, SalesAreaName, SalesManager, Latitude, Longitude, DealerName, Telno, StreetNo, StreetName, Suburb, PostCode, AddressLine1, ProvinceName, CoreArea, LocationType, PricingZone, ExpressShop, ShopSize, WildBean, QSR, CarWash, ATM) VALUES ('Loskop Vallei Vulstasie', 'Rtl Sales Ops-Gauteng North', 'Ledwaba, Emma', 12.323662, 76.622389, 'Jardin, Johnnie (MR J)', '013 2625565', NULL, 'Cnr Hereford & Van Riebeeck Street', 'GROBLERSDAL', 450, NULL, 'Mpumalanga', 'Core 4 - The Rest', NULL, '10C', '--', '--', '--', '--', '--', '--')");
+
+ 
     document.getElementById('view-loadingpoi').style.display = "none";
     //FUEL STATION END
 

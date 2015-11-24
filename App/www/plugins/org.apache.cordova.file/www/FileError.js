@@ -23,6 +23,7 @@
  * FileError
  */
 cordova.define("org.apache.cordova.file.FileError", function(require, exports, module) {
+	
 function FileError(error) {
   this.code = error || null;
 }

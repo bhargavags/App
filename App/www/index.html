@@ -19,7 +19,8 @@
     <script src="js/jquery.mobile-1.2.0.js" type="text/javascript"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script src="js/MicrosoftAjax.js" type="text/javascript"></script>
-        <script src="http://ppc.star-knowledge.com/AppService.svc/js" type="text/javascript"></script>
+    <script src="http://ppc.star-knowledge.com/AppService.svc/js" type="text/javascript"></script>
+   <!--  <script src="http://stardemo.cloudapp.net:9993/AppService.svc/js" type="text/javascript"></script> -->
  
   
 <style type="text/css">
@@ -565,6 +566,7 @@ try{
             // Verify server has been entered
           //  server = "http://192.168.2.26:9068/Service.asmx/UploadFile";
           server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+         // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
             if (server) {
                 // Specify transfer options
                 var options = new FileUploadOptions();
@@ -614,6 +616,7 @@ try{
             });*/
             // Verify server has been entered
             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+           // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
             if (server) {
                 // Specify transfer options
                 var options = new FileUploadOptions();
@@ -659,6 +662,7 @@ try{
              });*/
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+           //  server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -705,6 +709,7 @@ try{
              });*/
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+            // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -751,6 +756,7 @@ try{
              });*/
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+             //server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -797,6 +803,7 @@ try{
              });*/
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+            // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -842,7 +849,8 @@ try{
                  });
              });*/
              // Verify server has been entered
-             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+            server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+          //   server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -889,6 +897,7 @@ try{
              });*/
              // Verify server has been entered
              server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+            // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
              if (server) {
                  // Specify transfer options
                  var options = new FileUploadOptions();
@@ -946,6 +955,7 @@ try{
         });*/
         // Verify server has been entered
         server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+       // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
         if (server) {
         	
             // Specify transfer options
@@ -997,6 +1007,7 @@ try{
             });*/
             // Verify server has been entered
             server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+           // server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
             if (server) {
 
                 // Specify transfer options
@@ -1047,7 +1058,8 @@ try{
                 });
             });*/
             // Verify server has been entered
-            server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+         //   server = "http://ppcmobi.starsoft-india.com/service.asmx/UploadFile";
+            server = "http://stardemo.cloudapp.net:9992/service.asmx?op=UploadFile";
             if (server) {
 
                 // Specify transfer options
@@ -1156,16 +1168,43 @@ var TimeHistroy = $('#txttimepicker').val();
                 <p class="Assist"> REPORT AN ACCIDENT</p>
                 
             </div>
-            <div class="listData">
-               <!--<p class="Assist">CALL POLICE</p> onclick="gotoAboutAAPage()"-->
+            
+            <!-- commented by supriya to give onclick functionality to whole div -->
+           <!--  <div class="listData">
+               <p class="Assist">CALL POLICE</p> onclick="gotoAboutAAPage()"
                 <a href="tel:10111"  style="text-decoration:none;color:White">CALL POLICE</a>
                 
-            </div>
-            <div class="listData">
-               <!-- <p class="Assist"> CALL THE AA</p>-->
+            </div> -->
+            
+            
+            
+            	<div class="listData">
+
+				<a class="Assist" href="tel:10111"
+					style="text-decoration: none; color: White">
+					<div>Call Police
+                    </div> </a>
+                                         
+			</div>
+            
+             <!-- commented by supriya to give onclick functionality to whole div -->
+        <!--     <div class="listData">
+               <p class="Assist"> CALL THE AA</p>
                  <a href="tel:0861000234"  style="text-decoration:none;color:White">CALL AA</a>
                 
-            </div>
+            </div> -->
+            
+            
+            <div class="listData">
+
+				<!-- <a href="tel:0861000234" style="text-decoration: none; color: White;">CALL </a>-->
+				<a href="tel:0860706050"
+					style="text-decoration: none; color: White">
+					<div >Call AA
+
+                       </div> </a>
+			</div>
+            
             
             
             
@@ -2085,11 +2124,11 @@ var TimeHistroy = $('#txttimepicker').val();
 <p class="paraAboutAA">In the event of an accident in which no one is killed or injured, you may not remove a vehicle from the scene of the accident without the permission of the owner, driver or operator, except to allow the passage of traffic.
 
 You should also obtain all the information you possibly can in order to support your insurance claim, or legal case if it comes to that.</p>
-<p class="paraAboutAA">Names, addresses, ID numbers, and contact details for 3rd parties is vital, as well as insurance, car registration numbers, driving and car licence details. If the driver is not the owner of the vehicle, you’ll need to get the same details for the vehicle owner/s.  If the vehicle is owned by a company, you’ll need to record the company details too.</p>
+<p class="paraAboutAA">Names, addresses, ID numbers, and contact details for 3rd parties is vital, as well as insurance, car registration numbers, driving and car licence details. If the driver is not the owner of the vehicle, you'll need to get the same details for the vehicle owner/s.  If the vehicle is owned by a company, you'll need to record the company details too.</p>
 <p class="paraAboutAA">Photographs of damage to vehicles or other property is also a good idea to support any claims you may need to make, or answer, as well as notes regarding the extent of the damage.</p>
-<p class="paraAboutAA">For witnesses you’ll need names, telephone and ID numbers, as well as a witness statement. You should record this in writing; however, a voice or video recording may be accepted by your insurer.
+<p class="paraAboutAA">For witnesses you'll need names, telephone and ID numbers, as well as a witness statement. You should record this in writing; however, a voice or video recording may be accepted by your insurer.
 Details of the road and weather conditions at the time of the accident, as well as visibility may substantiate your claim.</p> <p class="paraAboutAA">Make a note of any landmarks, as well as distances.
-Make a note of any police officers’ details at the scene of the accident.</p>
+Make a note of any police Officer's’ details at the scene of the accident.</p>
 
              </td>
              

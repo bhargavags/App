@@ -19,6 +19,7 @@
  *
 */
 cordova.define("org.apache.cordova.file.FileReader", function(require, exports, module) {
+	
 var exec = require('cordova/exec'),
     modulemapper = require('cordova/modulemapper'),
     utils = require('cordova/utils'),

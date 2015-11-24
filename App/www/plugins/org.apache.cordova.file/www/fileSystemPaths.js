@@ -18,7 +18,8 @@
  * under the License.
  *
 */
-
+cordova.define("org.apache.cordova.file.fileSystemPaths", function(require, exports, module) {
+	
 var exec = require('cordova/exec');
 var channel = require('cordova/channel');
 
@@ -59,3 +60,4 @@ channel.onCordovaReady.subscribe(function() {
     exec(after, null, 'File', 'requestAllPaths', []);
 });
 
+});

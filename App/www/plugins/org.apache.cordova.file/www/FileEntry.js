@@ -19,6 +19,7 @@
  *
 */
 cordova.define("org.apache.cordova.file.FileEntry", function(require, exports, module) {
+	
 var utils = require('cordova/utils'),
     exec = require('cordova/exec'),
     Entry = require('./Entry'),

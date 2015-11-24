@@ -18,7 +18,7 @@
  * under the License.
  *
 */
-
+//cordova.define("org.apache.cordova.file.FileUploadOptions", function(require, exports, module) {
 /**
  * Options to customize the HTTP request used to upload files.
  * @constructor
@@ -29,7 +29,8 @@
  * @param headers {Object}   Keys are header names, values are header values. Multiple
  *                           headers of the same name are not supported.
  */
-//cordova.define("org.apache.cordova.file.FileUploadOptions", function(require, exports, module) {
+cordova.define("org.apache.cordova.file.FileUploadOptions", function(require, exports, module) {
+	
 var FileUploadOptions = function(fileKey, fileName, mimeType, params, headers, httpMethod) {
     this.fileKey = fileKey || null;
     this.fileName = fileName || null;
@@ -40,4 +41,4 @@ var FileUploadOptions = function(fileKey, fileName, mimeType, params, headers, h
 };
 
 module.exports = FileUploadOptions;
-//}):
+});

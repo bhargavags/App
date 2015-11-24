@@ -8,9 +8,9 @@
     version     = "1.0.0"
     versionCode = "10">
   
-		<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0"> </widget>
+	<!-- 	<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0"> </widget>   -->
           
-    <name>AA IOS ANDROID</name> 
+    <name>AA  ANDROID</name> 
     <author>AA IOS ANDROID </author>
     <description>AA IOS ANDROID Application.</description>
     <icon src="images/AA.png"/>
@@ -20,7 +20,10 @@
       <rim:permit>read_geolocation</rim:permit>
     </rim:permissions>
 
-    <feature id="blackberry.invoke" />
+    
+    <access subdomains="true" origin="*"  />
+    
+   <!--  <feature id="blackberry.invoke" />
     <feature id="blackberry.invoke.BrowserArguments" />
     <feature id="blackberry.identity" />
 
@@ -35,7 +38,7 @@
     </access>
     <access origin="http://192.168.2.26:9068/Service.asmx" subdomains="true" />
     <access origin="http://118.139.160.226:9068/AAWebService.asmx" subdomains="true" />
-    <access origin="http://ppcmobi.starsoft-india.com/aawebservice.asmx" subdomains="true" />
+    <access origin="http://ppcmobi.starsoft-india.com/aawebservice.asmx" subdomains="true" /> -->
     
       <!-- versionCode is optional and Android only -->
 

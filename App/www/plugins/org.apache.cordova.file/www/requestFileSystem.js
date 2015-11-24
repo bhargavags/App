@@ -19,6 +19,7 @@
  *
 */
 cordova.define("org.apache.cordova.file.requestFileSystem", function(require, exports, module) {
+	
 var argscheck = require('cordova/argscheck'),
     FileError = require('./FileError'),
     FileSystem = require('./FileSystem'),

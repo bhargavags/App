@@ -19,6 +19,7 @@
  *
 */
 cordova.define("org.apache.cordova.file.FileSystem", function(require, exports, module) {
+	
 var DirectoryEntry = require('./DirectoryEntry');
 
 /**
